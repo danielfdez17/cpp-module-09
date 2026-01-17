@@ -191,10 +191,10 @@ void	PMergeMe::display1() const
 
 void	PMergeMe::sort2()
 {
-
+	this->listMergeSort(0, this->size - 1);
 	this->end2 = clock();
 	double elapsed = double(this->end2 - this->start) / CLOCKS_PER_SEC;
-	std::cout << CYAN "Time to process a range of " << this->size << " elements with std::set<int>    : " << elapsed << " us\n" RESET;
+	std::cout << CYAN "Time to process a range of " << this->size << " elements with std::list<int>    : " << elapsed << " us\n" RESET;
 }
 void	PMergeMe::display2() const
 {

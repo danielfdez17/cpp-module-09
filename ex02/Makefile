@@ -59,6 +59,8 @@ run:
 	clear
 	@$(MAKE) re --no-print-directory
 	./$(NAME) 3 5 9 7 4
+	@./$(NAME) `shuf -i 1-100000 -n 10 | tr "\n" " "`
+# 	@./$(NAME) `shuf -i 1-100000 -n 3000 | tr "\n" " "`
 
 debug:
 	clear

@@ -14,12 +14,11 @@ int main(int ac, char **av)
 
 	PMergeMe	merge;
 	
-	std::cout << "Before: ";
+	std::cout << YELLOW "Before: ";
 	int n;
 	for (int i = 1; i < ac; i++)
 	{
 		n = std::atoi(av[i]);
-		// ! check negative values
 		if (n < 0)
 		{
 			std::cerr << RED "Error: negative numbers are not allowed\n" RESET;
@@ -28,7 +27,7 @@ int main(int ac, char **av)
 		std::cout << n << " ";
 		merge.addNumber(n);
 	}
-	std::cout << "\nAfter:  ";
+	std::cout << GREEN "\nAfter:  ";
 	merge.displaySorted();
 	merge.sort1();
 	merge.sort2();

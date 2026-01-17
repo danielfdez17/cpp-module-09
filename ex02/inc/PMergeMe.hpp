@@ -20,7 +20,12 @@ private:
 	clock_t				end1;
 	clock_t				end2;
 	long				size;
-	void	swap(int &, int &);
+
+
+	void	vectorMerge(long, long, long);
+	void	vectorMergeSort(long, long);
+	// void	listMerge(long, long, long);
+	// void	listMergeSort(long, long);
 	
 public:
 	PMergeMe();

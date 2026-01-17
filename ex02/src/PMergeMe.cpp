@@ -139,7 +139,7 @@ void	PMergeMe::vectorMergeSort(long begin, long end)
 	this->vectorMerge(begin, mid, end);
 }
 
-PMergeMe::PMergeMe() : start(clock()), size(0) {}
+PMergeMe::PMergeMe() : start(clock()), size(0), processingTime(0.0) {}
 
 PMergeMe::PMergeMe(PMergeMe const &copy) { (void)copy; }
 
@@ -159,7 +159,7 @@ void	PMergeMe::addNumber(int n)
 	this->vector.push_back(n);
 	this->list.push_back(n);
 	this->size++;
-	this->end2 = clock();
+	this->end = clock();
 }
 
 void	PMergeMe::displaySorted() const
@@ -175,10 +175,11 @@ void	PMergeMe::displaySorted() const
 
 void	PMergeMe::sort1()
 {
+	this->start = clock();
 	this->vectorMergeSort(0, this->size - 1);
-	this->end1 = clock();
-	double elapsed = double(this->end1 - this->start) / CLOCKS_PER_SEC;
-	std::cout << BLUE "Time to process a range of " << this->size << " elements with std::vector<int> : " << elapsed << " us\n";
+	this->end = clock();
+	double elapsed = double(this->end - this->start) / CLOCKS_PER_SEC;
+	std::cout << BLUE "Time to process a range of " << this->size << " elements with std::vector<int> : " << elapsed + this->processingTime << " us\n";
 }
 
 void	PMergeMe::display1() const
@@ -191,10 +192,11 @@ void	PMergeMe::display1() const
 
 void	PMergeMe::sort2()
 {
+	this->start = clock();
 	this->listMergeSort(0, this->size - 1);
-	this->end2 = clock();
-	double elapsed = double(this->end2 - this->start) / CLOCKS_PER_SEC;
-	std::cout << CYAN "Time to process a range of " << this->size << " elements with std::list<int>   : " << elapsed << " us\n" RESET;
+	this->end = clock();
+	double elapsed = double(this->end - this->start) / CLOCKS_PER_SEC;
+	std::cout << CYAN "Time to process a range of " << this->size << " elements with std::list<int>   : " << elapsed + this->processingTime << " us\n" RESET;
 }
 void	PMergeMe::display2() const
 {
@@ -202,4 +204,10 @@ void	PMergeMe::display2() const
 	for (long i = 0 ; i < this->size; i++)
 		std::cout << this->getValueAt(this->list, i) << " ";
 	std::cout << "\n" RESET;
+}
+
+void	PMergeMe::stopProcessingTimer()
+{
+	this->end = clock();
+	this->processingTime = double(this->end - this->start) / CLOCKS_PER_SEC;
 }

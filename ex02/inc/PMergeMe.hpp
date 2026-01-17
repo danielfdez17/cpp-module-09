@@ -14,12 +14,12 @@ class PMergeMe
 private:
 
 	std::vector<int>	vector;
-	std::list<int>			list;
+	std::list<int>		list;
 	std::set<int>		set;
 	clock_t				start;
-	clock_t				end1;
-	clock_t				end2;
+	clock_t				end;
 	long				size;
+	double				processingTime;
 
 	int		getValueAt(std::list<int>const&, long) const;
 	void	setValueAt(std::list<int>&, long, int);
@@ -41,6 +41,7 @@ public:
 	void	display1() const;
 	void	sort2();
 	void	display2() const;
+	void	stopProcessingTimer();
 };
 
 #endif // __PMERGEME_HPP__

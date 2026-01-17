@@ -98,6 +98,7 @@ void	BitcoinExchange::displayFactor(std::string key, float value)
 		std::cerr << RED "Error: too large number.\n" RESET;
 		return;
 	}
+	std::cout << YELLOW << "[INFO] Processing " << key << " " << value << "...\t" RESET;
 	float factor = findValueOfDateOrClosestDate(key);
 	std::cout << GREEN << key << " => " << value << " = " << value * factor << "\n" RESET;
 }

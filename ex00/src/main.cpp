@@ -50,6 +50,7 @@ int main(int ac, char **av)
 	}
 
 	
+	std::getline(file, line); // ? read line
 	while (std::getline(file, line))
 	{
 		if (!validateInput(line))
@@ -57,6 +58,11 @@ int main(int ac, char **av)
 			std::cerr << RED "Error: bad input => " << line << "\n" RESET;
 			continue;
 		}
+		size_t	sepPos = line.find('|');
+		std::string	date = line.substr(0, sepPos - 1);
+		std::string	valueStr = line.substr(sepPos + 2);
+		float		value = strtof(valueStr.c_str(), NULL);
+		btc.displayFactor(date, value);
 	}
 
 	file.close();

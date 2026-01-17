@@ -69,4 +69,22 @@ static inline bool validateDayOfMonth(int month, int days)
 	}
 }
 
+static inline bool validateInput(std::string input)
+{
+	size_t	sepPos = input.find('|');
+	if (sepPos == std::string::npos)
+		return false;
+
+	std::string	date = input.substr(0, sepPos - 1);
+	size_t		dateSize = date.size();
+
+	if (dateSize != DATE_SIZE)
+		return false;
+	
+	std::string	valueStr = input.substr(sepPos + 2);
+	if (valueStr.empty())
+		return false;
+	return true;
+}
+
 #endif // __COLORS__

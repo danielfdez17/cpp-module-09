@@ -54,7 +54,33 @@ float	BitcoinExchange::findValueOfDateOrClosestDate(std::string key)
 
 BitcoinExchange::BitcoinExchange() {}
 
-BitcoinExchange::BitcoinExchange(std::string key, float value)
+BitcoinExchange::BitcoinExchange(BitcoinExchange const& copy) { (void) copy;}
+
+BitcoinExchange & BitcoinExchange::operator=(BitcoinExchange const& copy) { *this = copy; return *this;}
+
+BitcoinExchange::~BitcoinExchange() {}
+
+void	BitcoinExchange::addDateValue(std::string key, float value)
+{
+	if (!isValidDate(key))
+	{
+		std::cerr << RED "Error: bad input => " << key << "\n" RESET;
+		return;
+	}
+	if (value < MIN_VALUE)
+	{
+		std::cerr << RED "Error: not a positive number.\n" RESET;
+		return;
+	}
+	if (value > MAX_VALUE)
+	{
+		std::cerr << RED "Error: too large number.\n" RESET;
+		return;
+	}
+	this->dates.insert(std::make_pair(Date(key), value));
+}
+
+void	BitcoinExchange::displayFactor(std::string key, float value)
 {
 	if (!isValidDate(key))
 	{
@@ -74,9 +100,3 @@ BitcoinExchange::BitcoinExchange(std::string key, float value)
 	float factor = findValueOfDateOrClosestDate(key);
 	std::cout << GREEN << key << " => " << value << " = " << value * factor << "\n" RESET;
 }
-
-BitcoinExchange::BitcoinExchange(BitcoinExchange const& copy) {}
-
-BitcoinExchange & BitcoinExchange::operator=(BitcoinExchange const& copy) {}
-
-BitcoinExchange::~BitcoinExchange() {}

@@ -8,16 +8,16 @@ BitcoinExchange::Date::Date(std::string date)
 	std::string yearStr, monthStr, dayStr;
 
 	yearStr = date.substr(0, YEAR_SIZE);
-	monthStr = date.substr(YEAR_SIZE + 1, YEAR_SIZE + 1 + MONTH_SIZE);
-	dayStr = date.substr(YEAR_SIZE + 1 + MONTH_SIZE + 1);
+	monthStr = date.substr(YEAR_SIZE + 1, MONTH_SIZE);
+	dayStr = date.substr(YEAR_SIZE + 1 + MONTH_SIZE + 1, DAY_SIZE);
 	
-	this->year = std::stoi(yearStr);
+	this->year = std::strtol(yearStr.c_str(), NULL, 10);
 	if (!validateYear(this->year))
 		this->year = -1;
-	this->month = std::stoi(monthStr);
+	this->month = std::strtol(monthStr.c_str(), NULL, 10);
 	if (!validateMonth(this->month))
 		this->month = -1;
-	this->day = std::stoi(dayStr);
+	this->day = std::strtol(dayStr.c_str(), NULL, 10);
 	if (!validateDayOfMonth(this->month, this->day))
 		this->day = -1;
 }
@@ -45,8 +45,8 @@ BitcoinExchange::Date & BitcoinExchange::Date::operator=(Date const& copy)
 }
 BitcoinExchange::Date::~Date() {}
 
-int	BitcoinExchange::Date::getYear() const { return this->year; }
+long	BitcoinExchange::Date::getYear() const { return this->year; }
 
-int	BitcoinExchange::Date::getMonth() const { return this->month; }
+long	BitcoinExchange::Date::getMonth() const { return this->month; }
 
-int	BitcoinExchange::Date::getDay() const { return this->day; }
+long	BitcoinExchange::Date::getDay() const { return this->day; }

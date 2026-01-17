@@ -23,7 +23,7 @@ OBJ_DIR = ./obj/
 
 # * Sources files
 BITCOIN_EXCHANGE_DIR = ./src/
-BITCOIN_EXCHANGE_SRCS = 	main.cpp #BitcoinExchange.cpp
+BITCOIN_EXCHANGE_SRCS = 	main.cpp BitcoinExchange.cpp Date.cpp
 
 SRCS = $(BITCOIN_EXCHANGE_SRCS)
 
@@ -58,7 +58,7 @@ re: fclean all
 run:
 	clear
 	@$(MAKE) re --no-print-directory
-	./$(NAME)
+	./$(NAME) input.txt
 
 .PHONY: all obj clean fclean re
 

@@ -12,9 +12,9 @@ private:
 	class Date
 	{
 		private:
-			int	year;
-			int	month;
-			int	day;
+			long	year;
+			long	month;
+			long	day;
 		public:
 			Date();
 			Date(std::string);
@@ -22,9 +22,9 @@ private:
 			Date(Date const&);
 			Date & operator=(Date const&);
 			~Date();
-			int	getYear() const;
-			int	getMonth() const;
-			int	getDay() const;
+			long	getYear() const;
+			long	getMonth() const;
+			long	getDay() const;
 	};
 
 	std::map<Date, float>			dates;
@@ -35,10 +35,13 @@ private:
 	
 public:
 	BitcoinExchange();
-	BitcoinExchange(std::string, float);
 	BitcoinExchange(BitcoinExchange const& copy);
 	BitcoinExchange & operator=(BitcoinExchange const& copy);
 	~BitcoinExchange();
+
+	void							addDateValue(std::string, float);
+	void							displayFactor(std::string, float);
+
 
 };
 

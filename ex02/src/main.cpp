@@ -31,8 +31,8 @@ int main(int ac, char **av)
 	merge.displaySorted();
 	merge.sort1();
 	merge.sort2();
-	merge.display1();
-	merge.display2();
+	// merge.display1();
+	// merge.display2();
 
 	return 0;
 }

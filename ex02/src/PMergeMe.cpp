@@ -194,14 +194,12 @@ void	PMergeMe::sort2()
 	this->listMergeSort(0, this->size - 1);
 	this->end2 = clock();
 	double elapsed = double(this->end2 - this->start) / CLOCKS_PER_SEC;
-	std::cout << CYAN "Time to process a range of " << this->size << " elements with std::list<int>    : " << elapsed << " us\n" RESET;
+	std::cout << CYAN "Time to process a range of " << this->size << " elements with std::list<int>   : " << elapsed << " us\n" RESET;
 }
 void	PMergeMe::display2() const
 {
 	std::cout << MAGENTA "list  : ";
 	for (long i = 0 ; i < this->size; i++)
 		std::cout << this->getValueAt(this->list, i) << " ";
-	// for (std::list<int>::iterator it = this->list.begin() ; it != this->list.end(); ++it)
-	// 	std::cout << *it << " ";
 	std::cout << "\n" RESET;
 }

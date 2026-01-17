@@ -1,5 +1,6 @@
 #include "BitcoinExchange.hpp"
 #include "utils.hpp"
+#include <stdlib.h>
 
 BitcoinExchange::Date::Date() : year(0), month(1), day(1) {}
 
@@ -11,13 +12,13 @@ BitcoinExchange::Date::Date(std::string date)
 	monthStr = date.substr(YEAR_SIZE + 1, MONTH_SIZE);
 	dayStr = date.substr(YEAR_SIZE + 1 + MONTH_SIZE + 1, DAY_SIZE);
 	
-	this->year = std::strtol(yearStr.c_str(), NULL, 10);
+	this->year = strtol(yearStr.c_str(), NULL, 10);
 	if (!validateYear(this->year))
 		this->year = -1;
-	this->month = std::strtol(monthStr.c_str(), NULL, 10);
+	this->month = strtol(monthStr.c_str(), NULL, 10);
 	if (!validateMonth(this->month))
 		this->month = -1;
-	this->day = std::strtol(dayStr.c_str(), NULL, 10);
+	this->day = strtol(dayStr.c_str(), NULL, 10);
 	if (!validateDayOfMonth(this->month, this->day))
 		this->day = -1;
 }
@@ -43,6 +44,16 @@ BitcoinExchange::Date & BitcoinExchange::Date::operator=(Date const& copy)
 	}
 	return *this;
 }
+
+bool	BitcoinExchange::Date::operator<(Date const& other) const
+{
+	if (this->year != other.year)
+		return this->year < other.year;
+	if (this->month != other.month)
+		return this->month < other.month;
+	return this->day < other.day;
+}
+
 BitcoinExchange::Date::~Date() {}
 
 long	BitcoinExchange::Date::getYear() const { return this->year; }

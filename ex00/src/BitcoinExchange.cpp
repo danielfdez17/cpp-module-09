@@ -56,7 +56,7 @@ BitcoinExchange::BitcoinExchange() {}
 
 BitcoinExchange::BitcoinExchange(BitcoinExchange const& copy) { (void) copy;}
 
-BitcoinExchange & BitcoinExchange::operator=(BitcoinExchange const& copy) { *this = copy; return *this;}
+BitcoinExchange & BitcoinExchange::operator=(BitcoinExchange const& copy) { (void) copy; return *this ;}
 
 BitcoinExchange::~BitcoinExchange() {}
 

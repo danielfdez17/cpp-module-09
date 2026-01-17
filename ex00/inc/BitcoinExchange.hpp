@@ -21,6 +21,7 @@ private:
 			Date(int, int, int);
 			Date(Date const&);
 			Date & operator=(Date const&);
+			bool	operator<(Date const&) const;
 			~Date();
 			long	getYear() const;
 			long	getMonth() const;

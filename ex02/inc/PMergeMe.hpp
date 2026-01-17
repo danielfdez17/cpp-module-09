@@ -3,6 +3,7 @@
 #define __PMERGEME_HPP__
 
 #include "utils.hpp"
+#include "MyList.hpp"
 #include <iostream>
 #include <vector>
 #include <list>
@@ -14,18 +15,21 @@ class PMergeMe
 private:
 
 	std::vector<int>	vector;
-	std::list<int>		list;
+	// MyList<int>			list;
+	std::list<int>			list;
 	std::set<int>		set;
 	clock_t				start;
 	clock_t				end1;
 	clock_t				end2;
 	long				size;
 
+	int		getValueAt(std::list<int>const&, long) const;
+	void	setValueAt(std::list<int>&, long, int);
 
 	void	vectorMerge(long, long, long);
 	void	vectorMergeSort(long, long);
-	// void	listMerge(long, long, long);
-	// void	listMergeSort(long, long);
+	void	listMerge(long, long, long);
+	void	listMergeSort(long, long);
 	
 public:
 	PMergeMe();
@@ -36,7 +40,9 @@ public:
 	void	addNumber(int n);
 	void	displaySorted() const;
 	void	sort1();
+	void	display1() const;
 	void	sort2();
+	void	display2() const;
 };
 
 #endif // __PMERGEME_HPP__

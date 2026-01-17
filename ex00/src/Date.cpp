@@ -54,6 +54,29 @@ bool	BitcoinExchange::Date::operator<(Date const& other) const
 	return this->day < other.day;
 }
 
+BitcoinExchange::Date	BitcoinExchange::Date::operator--()
+{
+	if (this->day > 1)
+	{
+		this->day--;
+	}
+	else
+	{
+		if (this->month > 1)
+		{
+			this->month--;
+			this->day = getDaysOfMonth(this->year, this->month);
+		}
+		else
+		{
+			this->year--;
+			this->month = 12;
+			this->day = 31;
+		}
+	}
+	return *this;
+}
+
 BitcoinExchange::Date::~Date() {}
 
 long	BitcoinExchange::Date::getYear() const { return this->year; }
@@ -61,3 +84,10 @@ long	BitcoinExchange::Date::getYear() const { return this->year; }
 long	BitcoinExchange::Date::getMonth() const { return this->month; }
 
 long	BitcoinExchange::Date::getDay() const { return this->day; }
+
+void	BitcoinExchange::Date::print() const
+{
+	std::cout << this->year << "-" 
+			  << (this->month < 10 ? "0" : "") << this->month << "-" 
+			  << (this->day < 10 ? "0" : "") << this->day;
+}

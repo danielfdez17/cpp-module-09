@@ -48,8 +48,16 @@ float	BitcoinExchange::findValueOfDateOrClosestDate(std::string key)
 		return 0.0;
 	}
 	Date d(key);
-	// ! while(dates.find() != dates.end())
-	// ! { return *it}
+	std::map<Date, float>::iterator	it = this->dates.find(d);
+	while (it == this->dates.end())
+	{
+		--d;
+		it = this->dates.find(d);
+	}
+	std::cout << GREEN << "[OK] Found closest date: ";
+	d.print();
+	std::cout << ": " RESET;
+	return it->second;
 	return 0.0;
 }
 
@@ -98,7 +106,7 @@ void	BitcoinExchange::displayFactor(std::string key, float value)
 		std::cerr << RED "Error: too large number.\n" RESET;
 		return;
 	}
-	std::cout << YELLOW << "[INFO] Processing " << key << " " << value << "...\t" RESET;
+	std::cout << YELLOW << "[INFO] Processing " << key << " " << value << "...\n" RESET;
 	float factor = findValueOfDateOrClosestDate(key);
 	std::cout << GREEN << key << " => " << value << " = " << value * factor << "\n" RESET;
 }

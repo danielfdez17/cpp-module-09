@@ -22,10 +22,12 @@ private:
 			Date(Date const&);
 			Date & operator=(Date const&);
 			bool	operator<(Date const&) const;
+			Date	operator--();
 			~Date();
 			long	getYear() const;
 			long	getMonth() const;
 			long	getDay() const;
+			void	print() const;
 	};
 
 	std::map<Date, float>			dates;

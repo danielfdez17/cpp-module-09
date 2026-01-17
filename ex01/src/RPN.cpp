@@ -1,0 +1,103 @@
+#include "RPN.hpp"
+#include <string>
+
+bool RPN::isValidRPN(std::string input) const
+{
+	size_t size = input.size();
+	if (size == 0)
+		return false;
+
+	for (size_t i = 0; i < size; i++)
+	{
+		if (!isValidChar(input[i]))
+			return false;
+		if (isdigit(input[i]) && i + 1 < size && isdigit(input[i + 1]))
+			return false;
+	}
+	return true;
+}
+
+float RPN::processOp(float a, char op, float b)
+{
+	switch (op)
+	{
+	case '+':
+		return a + b;
+	case '-':
+		return a - b;
+	case '*':
+		return a * b;
+	case '/':
+		return a / b;
+	}
+	return 0.0;
+}
+
+void	RPN::displayResult() const
+{
+	try
+	{
+		std::cout << GREEN << this->stack.top() << "\n" << RESET;
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << RED << e.what() << "\n" RESET;
+	}
+}
+
+void RPN::processRPN(std::string input)
+{
+	size_t size = input.size();
+	int a, b;
+	try
+	{
+		for (size_t i = 0; i < size; i++)
+		{
+			if (input[i] == ' ')
+				continue;
+			if (isdigit(input[i]))
+				this->stack.push(input[i] - '0');
+			else if (isOp(input[i]))
+			{
+				a = this->stack.top();
+				this->stack.pop();
+				b = this->stack.top();
+				this->stack.pop();
+				this->stack.push(processOp(b, input[i], a));
+				// std::cout << YELLOW "Processed: " << b << " " << input[i] << " " << a << "\n";
+				// std::cout << GREEN "Stack size: " << this->stack.size() << "; Top: ";
+				// this->displayResult();
+				// std::cout << RESET;
+			}
+		}
+	}
+	catch (const std::exception &e)
+	{
+		std::cerr << RED << e.what() << "\n" RESET;
+	}
+}
+
+RPN::RPN() {}
+
+RPN::RPN(std::string input)
+{
+	if (!this->isValidRPN(input))
+	{
+		std::cout << RED "Error: '" << input << "'\n" RESET;
+		return;
+	}
+	this->processRPN(input);
+	this->displayResult();
+}
+
+RPN::RPN(RPN const &copy) { (void)copy; }
+
+RPN &RPN::operator=(RPN const &copy)
+{
+	(void)copy;
+	return *this;
+}
+
+RPN::~RPN() {}
+
+

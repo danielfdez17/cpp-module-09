@@ -60,6 +60,11 @@ run:
 	@$(MAKE) re --no-print-directory
 	./$(NAME) input.txt
 
-.PHONY: all obj clean fclean re
+debug:
+	clear
+	@$(MAKE) re --no-print-directory
+	gdb ./$(NAME)
+
+.PHONY: all obj clean fclean re run debug
 
 .DEFAULT_GOAL: all

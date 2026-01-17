@@ -7,6 +7,7 @@ bool	BitcoinExchange::isValidDate(std::string date)
 
 	if (dateSize != DATE_SIZE)
 		return false;
+
 	// ? process year
 	while (i < dateSize && isdigit(date[i]))
 		i++;
@@ -14,20 +15,20 @@ bool	BitcoinExchange::isValidDate(std::string date)
 		return false;
 
 	// ? process first hyphen
-	i++;
 	if (i < dateSize && date[i] != HYPHEN)
 		return false;
+	i++;
 
 	// ? process month
 	while (i < dateSize && isdigit(date[i]))
 		i++;
-	if (i != YEAR_SIZE + 1 + DATE_SIZE)
+	if (i != YEAR_SIZE + 1 + MONTH_SIZE)
 		return false;
 	
 	// ? process second hyphen
-	i++;
 	if (i < dateSize && date[i] != HYPHEN)
 		return false;
+	i++;
 	
 	// ? process day
 	while (i < dateSize && isdigit(date[i]))
@@ -72,11 +73,11 @@ void	BitcoinExchange::addDateValue(std::string key, float value)
 		std::cerr << RED "Error: not a positive number.\n" RESET;
 		return;
 	}
-	if (value > MAX_VALUE)
-	{
-		std::cerr << RED "Error: too large number.\n" RESET;
-		return;
-	}
+	// if (value > MAX_VALUE)
+	// {
+	// 	std::cerr << RED "Error: too large number.\n" RESET;
+	// 	return;
+	// }
 	this->dates.insert(std::make_pair(Date(key), value));
 }
 

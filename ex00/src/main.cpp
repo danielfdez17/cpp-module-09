@@ -35,6 +35,7 @@ int main(int ac, char **av)
 		std::string	date = line.substr(0, sepPos);
 		std::string	valueStr = line.substr(sepPos + 1);
 		float		value = strtof(valueStr.c_str(), NULL);
+		// std::cout << "Date: " << date << " Value: " << value << "\n";
 		btc.addDateValue(date, value);
 	}
 	

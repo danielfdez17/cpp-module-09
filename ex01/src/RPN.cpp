@@ -37,6 +37,10 @@ void	RPN::displayResult() const
 {
 	try
 	{
+		if (this->stack.empty())
+			throw std::runtime_error("The stack is empty!");
+		if (this->stack.size() != 1)
+			throw std::runtime_error("The stack has more than one value\n");
 		std::cout << GREEN << this->stack.top() << "\n" << RESET;
 	}
 	catch(const std::exception& e)
@@ -59,21 +63,28 @@ void RPN::processRPN(std::string input)
 				this->stack.push(input[i] - '0');
 			else if (isOp(input[i]))
 			{
+				if (this->stack.empty())
+					throw std::exception();
 				a = this->stack.top();
 				this->stack.pop();
+				if (this->stack.empty())
+					throw std::exception();
 				b = this->stack.top();
 				this->stack.pop();
 				this->stack.push(processOp(b, input[i], a));
-				// std::cout << YELLOW "Processed: " << b << " " << input[i] << " " << a << "\n";
-				// std::cout << GREEN "Stack size: " << this->stack.size() << "; Top: ";
-				// this->displayResult();
-				// std::cout << RESET;
+				if (DEBUG)
+				{
+					std::cout << YELLOW "Processed: " << b << " " << input[i] << " " << a << "\n";
+					std::cout << GREEN "Stack size: " << this->stack.size() << "; Top: ";
+					this->displayResult();
+					std::cout << RESET;
+				}
 			}
 		}
 	}
 	catch (const std::exception &e)
 	{
-		std::cerr << RED << e.what() << "\n" RESET;
+		// std::cerr << RED << e.what() << "\n" RESET;
 	}
 }
 
@@ -99,5 +110,3 @@ RPN &RPN::operator=(RPN const &copy)
 }
 
 RPN::~RPN() {}
-
-

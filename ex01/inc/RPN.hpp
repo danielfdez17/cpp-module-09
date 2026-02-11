@@ -16,12 +16,13 @@ private:
 	float				processOp(float, char, float);
 	void				processRPN(std::string);
 	void				displayResult() const;
-	
-public:
+
 	RPN();
-	RPN(std::string);
 	RPN(RPN const& copy);
 	RPN & operator=(RPN const& copy);
+	
+public:
+	RPN(std::string);
 	~RPN();
 
 };

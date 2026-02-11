@@ -10,7 +10,7 @@ NAME = RPN
 
 # * Compilation
 MYCPP = c++
-MYCPPFLAGS = -Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address
+MYCPPFLAGS = -Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address #-D DEBUG=true
 
 # * Removal
 RM = rm -rf

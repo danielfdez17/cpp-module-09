@@ -13,6 +13,10 @@
 #define CYAN "\033[36m"
 #define WHITE "\033[37m"
 
+#ifndef DEBUG
+#define DEBUG false
+#endif
+
 static inline bool isOp(char c)
 {
 	return c == '+' || c == '*' || c == '-' || c == '/';

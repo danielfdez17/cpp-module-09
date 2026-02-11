@@ -50,12 +50,17 @@ float	BitcoinExchange::findValueOfDateOrClosestDate(std::string key)
 		throw std::runtime_error("There is no data!");
 
 	Date d(key);
-	std::map<Date, float>::iterator	it = this->dates.find(d);
-	while (it == this->dates.end())
-	{
-		--d;
-		it = this->dates.find(d);
-	}
+	std::map<Date, float>::iterator it = this->dates.lower_bound(d);
+	// std::map<Date, float>::iterator	it = this->dates.find(d);
+	// while (it == this->dates.end())
+	// {
+	// 	--d;
+	// 	it = this->dates.find(d);
+	// }
+	--it;
+	if (it == this->dates.end())
+		throw std::runtime_error("No data found");
+	d = it->first;
 	std::cout << OK << "Found closest date {";
 	d.print();
 	std::cout << "," << it->second << "}: " RESET;
@@ -190,7 +195,7 @@ void	BitcoinExchange::displayFactor(std::string input)
 	}
 	catch(const std::exception& e)
 	{
-		std::cerr << ERROR << e.what() << "\n\n" RESET;
+		std::cerr << ERROR << e.what() << "\n" RESET;
 	}
 
 }

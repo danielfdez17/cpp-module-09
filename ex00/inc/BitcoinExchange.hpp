@@ -3,7 +3,6 @@
 #define __BITCOINEXCHANGE_HPP__
 
 #include "utils.hpp"
-#include <iostream>
 #include <map>
 
 class BitcoinExchange
@@ -30,21 +29,27 @@ private:
 			void	print() const;
 	};
 
-	std::map<Date, float>			dates;
 
-	bool							isValidDate(std::string);
-	float							findValueOfDateOrClosestDate(std::string);
+	std::map<Date, float>	dates;
+
+	bool					isValidDate(std::string);
+	float					findValueOfDateOrClosestDate(std::string);
 
 	
-public:
-	BitcoinExchange();
 	BitcoinExchange(BitcoinExchange const& copy);
 	BitcoinExchange & operator=(BitcoinExchange const& copy);
+
+	bool					validateInput(std::string);
+	void					addDateValue(std::string, float);
+	void					displayFactor(std::string);
+	std::string				stringConcat(std::string, std::string);
+
+public:
+	BitcoinExchange();
 	~BitcoinExchange();
 
-	void							addDateValue(std::string, float);
-	void							displayFactor(std::string, float);
-
+	void					readDatabase();
+	void					readInputFile(std::string);
 
 };
 

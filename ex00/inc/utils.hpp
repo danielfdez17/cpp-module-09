@@ -1,8 +1,8 @@
 #pragma once
-#ifndef __COLORS__
-#define __COLORS__
+#ifndef __UTILS__
+#define __UTILS__
 
-#include <iostream>
+#include <iostream> // ! DO NOT REMOVE
 
 #define RESET "\033[0m"
 #define RED "\033[31m"
@@ -12,6 +12,12 @@
 #define MAGENTA "\033[35m"
 #define CYAN "\033[36m"
 #define WHITE "\033[37m"
+#define INFO YELLOW << "[INFO] "
+#define ERROR RED << "[ERROR] "
+#define OK GREEN << "[OK] "
+#define BAD_INPUT "Bad input => "
+#define NOT_POSITIVE "Not a positive number"
+#define TOO_LARGE_NUMBER "Too large number"
 
 const size_t		YEAR_SIZE = 4;
 const size_t		MONTH_SIZE = 2;
@@ -21,7 +27,7 @@ const char			HYPHEN = '-';
 
 const int MAX_YEAR = 2025;
 const int MAX_MONTH = 12;
-const int MAX_VALUE = 10000;
+const int MAX_VALUE = 1000;
 const int MIN_VALUE = 0;
 
 static inline bool validateYear(int year)
@@ -106,22 +112,4 @@ static inline int getDaysOfMonth(int year, int month)
 	}
 }
 
-static inline bool validateInput(std::string input)
-{
-	size_t	sepPos = input.find('|');
-	if (sepPos == std::string::npos)
-		return false;
-
-	std::string	date = input.substr(0, sepPos - 1);
-	size_t		dateSize = date.size();
-
-	if (dateSize != DATE_SIZE)
-		return false;
-	
-	std::string	valueStr = input.substr(sepPos + 2);
-	if (valueStr.empty())
-		return false;
-	return true;
-}
-
-#endif // __COLORS__
+#endif // __UTILS__

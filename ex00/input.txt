@@ -10,4 +10,6 @@ date | value
 | 2
 asdfk alsdk fasdkf asldfk j
 2012-01-11 | 1
+|
 2012-01-11 | 2147483648
+2012-01-11 | 100a

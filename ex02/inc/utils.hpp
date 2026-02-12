@@ -12,6 +12,9 @@
 #define MAGENTA "\033[35m"
 #define CYAN "\033[36m"
 #define WHITE "\033[37m"
+#define INFO YELLOW << "[INFO] "
+#define ERROR RED << "[ERROR] "
+#define OK GREEN << "[OK] "
 
 static inline bool isOp(char c)
 {

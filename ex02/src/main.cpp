@@ -2,33 +2,50 @@
 #include "utils.hpp"
 #include <iostream>
 #include <stdlib.h>
+#include <limits.h>
+
+#ifndef DEBUG
+#define DEBUG false
+#endif // DEBUG
 
 int main(int ac, char **av)
 {
 	(void)av;
 	if (ac == 1)
 	{
-		std::cerr << RED "At least one argument is needed!\n" RESET;
+		std::cerr << ERROR "At least one argument is needed!\n" RESET;
 		return 1;
 	}
 
 	PMergeMe	merge;
-	
-	std::cout << YELLOW "Before: ";
-	int n;
+	if (DEBUG)
+	{
+		std::cout << INFO "Before: ";
+	}
+	long n;
 	for (int i = 1; i < ac; i++)
 	{
-		n = std::atoi(av[i]);
+		n = std::atol(av[i]);
 		if (n < 0)
 		{
-			std::cerr << RED "Error: negative numbers are not allowed\n" RESET;
+			std::cerr << ERROR "Negative numbers are not allowed\n" RESET;
 			return 1;
 		}
-		std::cout << n << " ";
+		if (n < INT_MIN || n > INT_MAX)
+		{
+			std::cerr << ERROR << n << " is not an integer!\n" RESET;
+		}
+		if (DEBUG)
+		{
+			std::cout << n << " ";
+		}
 		merge.addNumber(n);
 	}
 	std::cout << GREEN "\nAfter:  ";
-	merge.displaySorted();
+	if (DEBUG)
+	{
+		merge.displaySorted();
+	}
 	merge.sort1();
 	merge.sort2();
 	// merge.display1();

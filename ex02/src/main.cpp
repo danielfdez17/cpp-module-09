@@ -10,11 +10,10 @@
 
 int main(int ac, char **av)
 {
-	(void)av;
 	if (ac == 1)
 	{
 		std::cerr << ERROR "At least one argument is needed!\n" RESET;
-		return 1;
+		return 0;
 	}
 
 	PMergeMe	merge;
@@ -29,7 +28,7 @@ int main(int ac, char **av)
 		if (n < 0)
 		{
 			std::cerr << ERROR "Negative numbers are not allowed\n" RESET;
-			return 1;
+			return 0;
 		}
 		if (n < INT_MIN || n > INT_MAX)
 		{
@@ -41,15 +40,18 @@ int main(int ac, char **av)
 		}
 		merge.addNumber(n);
 	}
-	std::cout << GREEN "\nAfter:  ";
 	if (DEBUG)
 	{
+		std::cout << GREEN "\nAfter:  ";
 		merge.displaySorted();
 	}
 	merge.sort1();
 	merge.sort2();
-	// merge.display1();
-	// merge.display2();
+	if (DEBUG)
+	{
+		merge.display1();
+		merge.display2();
+	}
 
 	return 0;
 }

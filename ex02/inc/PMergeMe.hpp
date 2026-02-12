@@ -2,6 +2,7 @@
 #ifndef __PMERGEME_HPP__
 #define __PMERGEME_HPP__
 
+#include "MyList.hpp"
 #include "utils.hpp"
 #include <iostream>
 #include <vector>
@@ -14,7 +15,8 @@ class PMergeMe
 private:
 
 	std::vector<int>	vector;
-	std::list<int>		list;
+	// std::list<int>		list;
+	MyList<int>			list;
 	std::set<int>		set;
 	clock_t				start;
 	clock_t				end;

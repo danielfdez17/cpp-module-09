@@ -58,9 +58,13 @@ re: fclean all
 run:
 	clear
 	@$(MAKE) re --no-print-directory
+	./$(NAME) 
+	./$(NAME) 9999999999999999999
+	./$(NAME) 3 5 9 7 -4
 	./$(NAME) 3 5 9 7 4
-	@./$(NAME) `shuf -i 1-100000 -n 10 | tr "\n" " "`
-	@./$(NAME) `shuf -i 1-100000 -n 3000 | tr "\n" " "`
+	./$(NAME) `shuf -i 1-100000 -n 10 | tr "\n" " "`
+	./$(NAME) `shuf -i 1-100000 -n 3000 | tr "\n" " "`
+	./$(NAME) `shuf -i 1-100000 -n 10000 | tr "\n" " "`
 
 debug:
 	clear

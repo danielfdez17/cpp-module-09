@@ -25,30 +25,73 @@ void	PMergeMe::setValueAt(std::list<int>& lst, long index, int value)
 
 void	PMergeMe::listMerge(long begin, long mid, long end)
 {
+	// long left = mid - begin + 1;
+	// long right = end - mid;
+
+	// std::list<int> leftList, rightList;
+
+	// // ? split stage
+	// for (long i = 0; i < left; i++)
+	// 	leftList.push_back(this->getValueAt(this->list, begin + i));
+	// for (long i = 0; i < right; i++)
+	// 	rightList.push_back(this->getValueAt(this->list, mid + 1 + i));
+	
+	// long i = 0, j = 0, k = begin;
+	
+	// // ? merge stage
+	// while (i < left && j < right)
+	// {
+	// 	if (this->getValueAt(leftList, i) <= this->getValueAt(rightList, j))
+	// 	{
+	// 		this->setValueAt(this->list, k, this->getValueAt(leftList, i));
+	// 		i++;
+	// 	}
+	// 	else
+	// 	{
+	// 		this->setValueAt(this->list, k, this->getValueAt(rightList, j));
+	// 		j++;
+	// 	}
+	// 	k++;
+	// }
+
+	// // ? copy remaining values
+	// while (i < left)
+	// {
+	// 	this->setValueAt(this->list, k, this->getValueAt(leftList, i));
+	// 	i++;
+	// 	k++;
+	// }
+
+	// while (j < right)
+	// {
+	// 	this->setValueAt(this->list, k, this->getValueAt(rightList, j));
+	// 	j++;
+	// 	k++;
+	// }
 	long left = mid - begin + 1;
 	long right = end - mid;
 
-	std::list<int> leftList, rightList;
+	MyList<int> leftList, rightList;
 
 	// ? split stage
 	for (long i = 0; i < left; i++)
-		leftList.push_back(this->getValueAt(this->list, begin + i));
+		leftList.push_back(this->vector[begin + i]);
 	for (long i = 0; i < right; i++)
-		rightList.push_back(this->getValueAt(this->list, mid + 1 + i));
+		rightList.push_back(this->vector[mid + 1 + i]);
 	
 	long i = 0, j = 0, k = begin;
 	
 	// ? merge stage
 	while (i < left && j < right)
 	{
-		if (this->getValueAt(leftList, i) <= this->getValueAt(rightList, j))
+		if (leftList[i] <= rightList[j])
 		{
-			this->setValueAt(this->list, k, this->getValueAt(leftList, i));
+			this->vector[k] = leftList[i];
 			i++;
 		}
 		else
 		{
-			this->setValueAt(this->list, k, this->getValueAt(rightList, j));
+			this->vector[k] = rightList[j];
 			j++;
 		}
 		k++;
@@ -57,14 +100,14 @@ void	PMergeMe::listMerge(long begin, long mid, long end)
 	// ? copy remaining values
 	while (i < left)
 	{
-		this->setValueAt(this->list, k, this->getValueAt(leftList, i));
+		this->vector[k] = leftList[i];
 		i++;
 		k++;
 	}
 
 	while (j < right)
 	{
-		this->setValueAt(this->list, k, this->getValueAt(rightList, j));
+		this->vector[k] = rightList[j];
 		j++;
 		k++;
 	}
@@ -194,6 +237,7 @@ void	PMergeMe::sort2()
 {
 	this->start = clock();
 	this->listMergeSort(0, this->size - 1);
+	// this->vectorMergeSort(0, this->size - 1);
 	this->end = clock();
 	double elapsed = double(this->end - this->start) / CLOCKS_PER_SEC;
 	std::cout << CYAN "Time to process a range of " << this->size << " elements with std::list<int>   : " << elapsed + this->processingTime << " us\n" RESET;

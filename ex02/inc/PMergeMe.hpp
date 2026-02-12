@@ -37,13 +37,15 @@ public:
 	PMergeMe & operator=(PMergeMe const& copy);
 	~PMergeMe();
 
-	void	addNumber(int n);
-	void	displaySorted() const;
-	void	sort1();
-	void	display1() const;
-	void	sort2();
-	void	display2() const;
-	void	stopProcessingTimer();
+	void				addNumber(int n);
+	void				displaySorted() const;
+	void				sortVector();
+	void				sortList();
+	void				stopProcessingTimer();
+	std::vector<int>	getVector() const;
+	MyList<int>			getList() const;
 };
+
+std::ostream &operator<<(std::ostream &out, PMergeMe const&algo);
 
 #endif // __PMERGEME_HPP__

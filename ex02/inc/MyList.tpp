@@ -1,4 +1,5 @@
 #include "MyList.hpp"
+#include <iostream>
 
 template <typename T>
 MyList<T>::MyList() : std::list<T>()
@@ -46,3 +47,13 @@ T	MyList<T>::operator[](int idx) const
 	std::advance(it, idx);
 	return *it;
 }
+
+// ! conflicts with std::string class
+// template <typename Container>
+// std::ostream &operator<<(std::ostream &out, const Container&c)
+// {
+// 	typename Contaienr::const_iterator it;
+// 	for (it = c.begin(); it != c.end(); it++)
+// 		out << *it << " ";
+// 	return out;
+// }

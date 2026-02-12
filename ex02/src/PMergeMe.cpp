@@ -216,7 +216,7 @@ void	PMergeMe::displaySorted() const
 	std::cout << "\n";
 }
 
-void	PMergeMe::sort1()
+void	PMergeMe::sortVector()
 {
 	this->start = clock();
 	this->vectorMergeSort(0, this->size - 1);
@@ -225,15 +225,7 @@ void	PMergeMe::sort1()
 	std::cout << BLUE "Time to process a range of " << this->size << " elements with std::vector<int> : " << elapsed + this->processingTime << " us\n";
 }
 
-void	PMergeMe::display1() const
-{
-	std::cout << MAGENTA "vector: ";
-	for (long i = 0 ; i < this->size; i++)
-		std::cout << this->vector[i] << " ";
-	std::cout << "\n" RESET;
-}
-
-void	PMergeMe::sort2()
+void	PMergeMe::sortList()
 {
 	this->start = clock();
 	this->listMergeSort(0, this->size - 1);
@@ -242,16 +234,23 @@ void	PMergeMe::sort2()
 	double elapsed = double(this->end - this->start) / CLOCKS_PER_SEC;
 	std::cout << CYAN "Time to process a range of " << this->size << " elements with std::list<int>   : " << elapsed + this->processingTime << " us\n" RESET;
 }
-void	PMergeMe::display2() const
-{
-	std::cout << MAGENTA "list  : ";
-	for (long i = 0 ; i < this->size; i++)
-		std::cout << this->getValueAt(this->list, i) << " ";
-	std::cout << "\n" RESET;
-}
 
 void	PMergeMe::stopProcessingTimer()
 {
 	this->end = clock();
 	this->processingTime = double(this->end - this->start) / CLOCKS_PER_SEC;
+}
+
+std::vector<int>	PMergeMe::getVector() const { return this->vector; }
+MyList<int>			PMergeMe::getList() const { return this->list; }
+
+std::ostream &operator<<(std::ostream &out, PMergeMe const&algo)
+{
+	out << MAGENTA "std::vector<int>: ";
+	for (std::vector<int>::const_iterator it = algo.getVector().begin(); it != algo.getVector().end(); it++)
+		out << *it << " ";
+	out << MAGENTA "\nMyList<int>: ";
+	for (MyList<int>::const_iterator it = algo.getList().begin(); it != algo.getList().end(); it++)
+		out << *it << " ";
+	return out;
 }

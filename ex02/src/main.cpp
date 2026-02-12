@@ -45,8 +45,8 @@ int main(int ac, char **av)
 		std::cout << GREEN "\nAfter:  ";
 		merge.displaySorted();
 	}
-	merge.sort1();
-	merge.sort2();
+	merge.sortVector();
+	merge.sortList();
 	if (DEBUG)
 	{
 		merge.display1();

@@ -9,6 +9,7 @@
 #include <vector>
 #include <list>
 #include <set>
+#include <algorithm>
 #include <ctime>
 
 class PMergeMe

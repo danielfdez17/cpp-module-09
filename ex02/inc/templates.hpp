@@ -2,6 +2,8 @@
 #ifndef __TEMPLATES_HPP__
 #define __TEMPLATES_HPP__
 
+#include <algorithm>
+
 template <typename Container>
 void	recursiveMergeSort(Container &c, long begin, long mid, long end);
 

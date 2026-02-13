@@ -207,17 +207,20 @@ static std::vector<int>	generateTill(int n)
 static std::vector<int>	jacobsthalSeq(int n)
 {
 	std::vector<int> seq;
-	std::vector<int> jacob = generateTill(n);
+	std::vector<int> jacob = generateTill(n + 3); // Generate enough Jacobsthal numbers
 	
-	for (size_t i = 1; i < jacob.size() - 1; i++)
+	for (size_t i = 1; i < jacob.size() && jacob[i] <= n; i++)
 	{
-		int start = jacob[i];
-		int end = n;
-		if (i + 1 < jacob.size())
-			end = jacob[i + 1];
-		size_t upper = static_cast<size_t>(std::min(end, n));
-		for (size_t j = upper; j > static_cast<size_t>(start); j--)
-		// for (size_t j = std::min(end, n) - 1; j < (size_t)start; j++)
+		// Skip if this Jacobsthal number is the same as previous (duplicate)
+		if (i > 1 && jacob[i] == jacob[i - 1])
+			continue;
+			
+		int start = (i == 1) ? 0 : jacob[i - 1];
+		int end = jacob[i];
+		size_t lower = static_cast<size_t>(start);
+		size_t upper = static_cast<size_t>(std::min(end, n - 1));
+		
+		for (size_t j = upper; j > lower; j--)
 			seq.push_back(j);
 	}
 
@@ -254,10 +257,13 @@ std::vector<int> fordJohnsonV(const std::vector<int>&v)
 		// 	oddValue = v[i];
 	}
 	
+	// ? Sort pairs by first element to maintain pairing
+	std::sort(pairs.begin(), pairs.end());
+	
 	std::vector<int> mainChain;
 	std::vector<int> pendingChain;
 	
-	// ? Split values
+	// ? Split sorted pairs
 	for (size_t i = 0; i < pairs.size(); i++)
 	{
 		mainChain.push_back(pairs[i].first);
@@ -266,7 +272,7 @@ std::vector<int> fordJohnsonV(const std::vector<int>&v)
 
 	if (DEBUG)
 	{
-		std::cout << "\nPrinting: ";
+		std::cout << "\nAfter sorting pairs: ";
 		for (size_t i = 0; i < mainChain.size(); i++)
 		{
 			std::cout << "{" << mainChain[i] << "," << pendingChain[i] << "} ";
@@ -279,12 +285,10 @@ std::vector<int> fordJohnsonV(const std::vector<int>&v)
 		if (DEBUG)
 			std::cout << "{" << oddValue << "} ";
 	}
-	// std::cout << "\n";
 
-	// ? Sort mainV recursively
+	// ? Recursively sort mainChain
 	std::vector<int> mainSorted = fordJohnsonV(mainChain);
 
-	// std::vector<int> result = std::vector<int>(mainSorted); // todo: review
 	std::vector<int> result = mainSorted;
 
 	// ? Insert pendV[0] at the beginning (mainV.push_front(pendV[0]))
@@ -292,21 +296,15 @@ std::vector<int> fordJohnsonV(const std::vector<int>&v)
 
 	// ? Insert the remaining of pendV
 	std::vector<int> jacob = jacobsthalSeq((int)pendingChain.size());
-	// print(jacob);
 	for (size_t i = 0; i < jacob.size(); i++)
 	{
-		// if (i < pendingChain.size())
 		if (static_cast<size_t>(jacob[i]) < pendingChain.size())
 		{
 			result.insert(std::lower_bound(result.begin(), result.end(), pendingChain[jacob[i]]), pendingChain[jacob[i]]);
 		}
 	}
 
-	// ? Inserting the oddValue variable
-	if (hasOddValue)
-	{
-		result.insert(std::lower_bound(result.begin(), result.end(), oddValue), oddValue);
-	}
+	// Note: oddValue is already in pendingChain and inserted via Jacobsthal loop
 	// print(result);
 
 	return result;

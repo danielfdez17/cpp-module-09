@@ -14,7 +14,7 @@ private:
 
 	bool				isValidRPN(std::string) const;
 	float				processOp(float, char, float);
-	void				processRPN(std::string);
+	bool				processRPN(std::string);
 	void				displayResult() const;
 
 	RPN();

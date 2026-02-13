@@ -10,7 +10,7 @@ NAME = RPN
 
 # * Compilation
 MYCPP = c++
-MYCPPFLAGS = -Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address #-D DEBUG=true
+MYCPPFLAGS = -Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address -D DEBUG=false
 
 # * Removal
 RM = rm -rf
@@ -58,12 +58,18 @@ re: fclean all
 run:
 	clear
 	@$(MAKE) re --no-print-directory
-	./$(NAME) "8 9 * 9 - 9 - 9 - 4 - 1 +"
-	./$(NAME) "7 7 * 7 -"
-	./$(NAME) "1 2 * 2 / 2 * 2 4 - +"
-	./$(NAME) "(1 + 1)"
-	./$(NAME) "0 1 /"
-	./$(NAME) "1 0 /"
+	@echo
+	@./$(NAME) "(1 + 1)"
+	@./$(NAME) "1 0 / 0 *"
+	@./$(NAME) "1 0"
+	@./$(NAME) "1 /"
+	@./$(NAME) "1 0 /asdf"
+	@./$(NAME) "1 0 /"
+	@./$(NAME) "0 1 /"
+	@./$(NAME) "8 9 * 9 - 9 - 9 - 4 - 1 +"
+	@./$(NAME) "7 7 * 7 -"
+	@./$(NAME) "1 2 * 2 / 2 * 2 4 - +"
+	@./$(NAME) "1 2 * 2 * 2 * 2 4 - + 5 /"
 
 debug:
 	clear

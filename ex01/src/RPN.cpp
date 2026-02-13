@@ -28,6 +28,8 @@ float RPN::processOp(float a, char op, float b)
 	case '*':
 		return a * b;
 	case '/':
+		if (b == 0.0f)
+			throw std::runtime_error(DIVISION_BY_0);
 		return a / b;
 	}
 	return 0.0;
@@ -37,19 +39,26 @@ void	RPN::displayResult() const
 {
 	try
 	{
-		if (this->stack.empty())
-			throw std::runtime_error("The stack is empty!");
-		if (this->stack.size() != 1)
-			throw std::runtime_error("The stack has more than one value\n");
-		std::cout << GREEN << this->stack.top() << "\n" << RESET;
+		if (!DEBUG)
+		{
+			if (this->stack.empty())
+				throw std::runtime_error(EMPTY_STACK);
+			if (this->stack.size() != 1)
+				throw std::runtime_error(BAD_INPUT);
+		}
+		if (DEBUG)
+			std::cout << GREEN;
+		else
+			std::cout << OK;
+		std::cout << this->stack.top() << "\n\n" << RESET;
 	}
 	catch(const std::exception& e)
 	{
-		std::cerr << RED << e.what() << "\n" RESET;
+		std::cerr << ERROR << e.what() << "\n\n" RESET;
 	}
 }
 
-void RPN::processRPN(std::string input)
+bool RPN::processRPN(std::string input)
 {
 	size_t size = input.size();
 	int a, b;
@@ -64,11 +73,11 @@ void RPN::processRPN(std::string input)
 			else if (isOp(input[i]))
 			{
 				if (this->stack.empty())
-					throw std::exception();
+					throw std::runtime_error(EMPTY_STACK);
 				a = this->stack.top();
 				this->stack.pop();
 				if (this->stack.empty())
-					throw std::exception();
+					throw std::runtime_error(EMPTY_STACK);
 				b = this->stack.top();
 				this->stack.pop();
 				this->stack.push(processOp(b, input[i], a));
@@ -84,21 +93,24 @@ void RPN::processRPN(std::string input)
 	}
 	catch (const std::exception &e)
 	{
-		// std::cerr << RED << e.what() << "\n" RESET;
+		std::cerr << ERROR << e.what() << "\n\n" RESET;
+		return false;
 	}
+	return true;
 }
 
 RPN::RPN() {}
 
 RPN::RPN(std::string input)
 {
+	std::cout << INFO "Processing '" << input << "'\n" RESET;
 	if (!this->isValidRPN(input))
 	{
-		std::cout << RED "Error: '" << input << "'\n" RESET;
+		std::cout << ERROR "Bad input: '" << input << "'\n\n" RESET;
 		return;
 	}
-	this->processRPN(input);
-	this->displayResult();
+	if (this->processRPN(input) && !DEBUG)
+		this->displayResult();
 }
 
 RPN::RPN(RPN const &copy) { (void)copy; }

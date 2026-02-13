@@ -11,6 +11,9 @@ void	mergeSort(Container &c, long begin, long mid, long end);
 template <typename Container>
 void	print(Container const&c);
 
+template <typename Container>
+double	sortingTime(Container &c);
+
 #include "templates.tpp"
 
 #endif // __TEMPLATES_HPP__

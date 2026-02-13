@@ -13,10 +13,7 @@ int main(int ac, char **av)
 	}
 
 	PMergeMe	merge;
-	if (DEBUG)
-	{
-		std::cout << INFO "Before: ";
-	}
+	std::cout << YELLOW "Before: ";
 	long n;
 	for (int i = 1; i < ac; i++)
 	{
@@ -31,18 +28,22 @@ int main(int ac, char **av)
 			std::cerr << ERROR << n << " is not an integer!\n" RESET;
 			return 0;
 		}
-		if (DEBUG)
+		if (i <= (MAX_SIZE / 2))
 		{
+			std::cout << n << " ";
+		}
+		else if (i >= ac - (MAX_SIZE / 2))
+		{
+			if (ac - 1 != MAX_SIZE && i == ac - (MAX_SIZE / 2))
+				std::cout << "... ";
 			std::cout << n << " ";
 		}
 		merge.addNumber(n);
 	}
+	std::cout << GREEN "\nAfter:  ";
+	merge.displaySorted();
 	merge.sort();
-	if (DEBUG)
-	{
-		std::cout << GREEN "\nAfter:  ";
-		merge.displaySorted();
-	}
+	std::cout << "\n" RESET;
 
 	return 0;
 }

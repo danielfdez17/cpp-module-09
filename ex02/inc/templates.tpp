@@ -80,3 +80,12 @@ void	print(Container const&c)
 	}
 	std::cout << "\n" RESET;
 }
+
+template <typename Container>
+double	sortingTime(Container &c)
+{
+	clock_t	start = clock();
+	recursiveMergeSort(c, 0, c.size() - 1);
+	clock_t	end = clock();
+	return double(end - start) / CLOCKS_PER_SEC;
+}

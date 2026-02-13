@@ -20,6 +20,6 @@
 #define DEBUG false
 #endif // DEBUG
 
-const int MAX_SIZE = 6;
+const int MAX_SIZE = 20;
 
 #endif // __COLORS__

@@ -3,6 +3,7 @@
 #define __PMERGEME_HPP__
 
 #include "MyList.hpp"
+#include "MySet.hpp"
 #include "utils.hpp"
 #include <iostream>
 #include <vector>
@@ -15,9 +16,9 @@ class PMergeMe
 private:
 
 	std::vector<int>	vector;
-	// std::list<int>		list;
 	MyList<int>			list;
-	std::set<int>		set;
+	MySet<int>		set;
+	// std::set<int>		set;
 	clock_t				start;
 	clock_t				end;
 	long				size;
@@ -28,6 +29,8 @@ private:
 
 	void				sortVector();
 	void				sortList();
+	void				stopProcessingTimer();
+	void				display() const;
 
 public:
 	PMergeMe();
@@ -36,10 +39,6 @@ public:
 	void				addNumber(int n);
 	void				displaySorted() const;
 	void				sort();
-	void				stopProcessingTimer();
 };
-
-
-
 
 #endif // __PMERGEME_HPP__

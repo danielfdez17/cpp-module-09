@@ -59,7 +59,7 @@ run:
 	clear
 	@$(MAKE) re --no-print-directory
 # 	./$(NAME) 
-	./$(NAME) 9999999999999999999
+	./$(NAME) 2 3 4 5 9999999999999999999
 # 	./$(NAME) 3 5 9 7 -4
 # 	./$(NAME) 3 5 9 7 4 1 50 10
 # 	./$(NAME) 3

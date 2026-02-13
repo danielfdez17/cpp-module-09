@@ -41,8 +41,9 @@ int main(int ac, char **av)
 		merge.addNumber(n);
 	}
 	std::cout << GREEN "\nAfter:  ";
-	merge.displaySorted();
-	merge.sort();
+	merge.fordJohnson();
+	// merge.displaySorted();
+	// merge.sort();
 	std::cout << "\n" RESET;
 
 	return 0;

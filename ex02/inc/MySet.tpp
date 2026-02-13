@@ -1,16 +1,22 @@
 #include "MySet.hpp"
 #include <iostream>
 
+// template <typename T, class Comparator>
+// MySet<T, Comparator>::MySet() : std::set<T, Comparator>()
 template <typename T>
 MySet<T>::MySet() : std::set<T>()
 {
 }
 
+// template <typename T, class Comparator>
+// MySet<T, Comparator>::MySet(MySet<T, Comparator> const& copy) : std::set<T>(copy)
 template <typename T>
-MySet<T>::MySet(MySet const& copy) : std::set<T>(copy)
+MySet<T>::MySet(MySet<T> const& copy) : std::set<T>(copy)
 {
 }
 
+// template <typename T, class Comparator>
+// MySet<T, Comparator> &MySet<T, Comparator>::operator=(MySet<T, Comparator> const& copy)
 template <typename T>
 MySet<T> &MySet<T>::operator=(MySet<T> const& copy)
 {
@@ -21,11 +27,15 @@ MySet<T> &MySet<T>::operator=(MySet<T> const& copy)
 	return *this;
 }
 
+// template <typename T, class Comparator>
+// MySet<T, Comparator>::~MySet()
 template <typename T>
 MySet<T>::~MySet()
 {
 }
 
+// template <typename T, class Comparator>
+// T	&MySet<T, Comparator>::operator[](int idx)
 template <typename T>
 T	&MySet<T>::operator[](int idx)
 {
@@ -37,6 +47,8 @@ T	&MySet<T>::operator[](int idx)
 	return *it;
 }
 
+// template <typename T, class Comparator>
+// T	MySet<T, Comparator>::operator[](int idx) const
 template <typename T>
 T	MySet<T>::operator[](int idx) const
 {

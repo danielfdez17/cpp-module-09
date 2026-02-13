@@ -7,6 +7,24 @@
 #include <set>
 #include <stdexcept>
 
+// struct ComPair
+// {
+// 	// bool operator()(const int&a, const int&b)
+// 	// {
+// 	// 	return a < b;
+// 	// }
+	
+// 	bool operator()(const std::pair<int, int>& a, const std::pair<int, int>& b)
+// 	{
+// 		// ! strictly sorted
+// 		if (a.second != b.second)
+// 			return a.second < b.second;
+// 		return a.first < b.first;
+// 	}
+// };
+
+// template <typename T, class Comparator = std::less<T> >
+// class MySet : public std::set<T, Comparator>
 template <typename T>
 class MySet : public std::set<T>
 {

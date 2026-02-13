@@ -14,6 +14,10 @@ void	print(Container const&c);
 template <typename Container>
 double	sortingTime(Container &c);
 
+// template <typename Container>
+// Container fordJohnson(Container &c);
+std::vector<int> fordJohnsonV(std::vector<int>v);
+
 #include "templates.tpp"
 
 #endif // __TEMPLATES_HPP__

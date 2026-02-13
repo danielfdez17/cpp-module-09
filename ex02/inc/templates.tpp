@@ -89,3 +89,221 @@ double	sortingTime(Container &c)
 	clock_t	end = clock();
 	return double(end - start) / CLOCKS_PER_SEC;
 }
+
+// template <typename Container>
+// Container fordJohnson(Container &c)
+// {
+// 	if (c.size() <= 1)
+// 		return c;
+
+// 	// ? Make pairs and sort by second component
+// 	if (DEBUG)
+// 		std::cout << "\nInserting: ";
+
+// 	std::vector<std::pair<int, int>> pairs;
+// 	int oddValue = -1;
+
+// 	for (long i = 0; i < c.size() - 1; i += 2)
+// 	{
+// 		if (i + 1 < c.size())
+// 		{
+// 			std::pair<int,int> p;
+// 			if (c[i] < c[i + 1])
+// 				p = std::make_pair(c[i + 1], c[i]);
+// 			else
+// 				p = std::make_pair(c[i], c[i + 1]);
+// 			if (DEBUG)
+// 				std::cout << "{" << p.first << "," << p.second << "} ";
+// 			pairs.push_back(p);
+// 		}
+// 		else
+// 			oddValue = c[i];
+// 	}
+
+// 	Container mainChain;
+// 	Container pendingChain;
+	
+// 	// ? Split values
+// 	for (size_t i = 0; i < pairs.size(); i++)
+// 	{
+// 		mainChain.push_back(pairs[i].first);
+// 		pendingChain.push_back(pairs[i].second);
+// 	}
+
+// 	if (DEBUG)
+// 	{
+// 		std::cout << "\nPrinting: ";
+// 		for (size_t i = 0; i < mainChain.size(); i++)
+// 		{
+// 			std::cout << "{" << mainChain[i] << "," << pendingChain[i] << "} ";
+// 		}
+// 	}
+
+// 	if (oddValue != -1)
+// 	{
+// 		pendingChain.push_back(oddValue);
+// 		if (DEBUG)
+// 			std::cout << "{" << oddValue << "} ";
+// 	}
+// 	std::cout << "\n";
+
+// 	// ? Sort mainV recursively
+// 	Container mainSorted = fordJohnson(mainChain);
+// 	// fordJohnson();
+// 	// if (DEBUG)
+// 	// 	print(this->mainV);
+// 	// recursiveMergeSort(this->mainV, 0, this->mainV.size() - 1);
+// 	// if (DEBUG)
+// 	// 	print(this->mainV);
+// 	Container result = mainSorted; // todo: review
+
+// 	// ? Insert pendV[0] at the beginning (mainV.push_front(pendV[0]))
+// 	result.insert(std::lower_bound(this->vector.begin(), this->vector.end(), pendV[0]), pendV[0]);
+// 	// this->mainV.push_back(pendV[0]);
+// 	// for (size_t i = this->mainV.size() - 1; i > 0; i--)
+// 	// 	this->mainV[i] = this->mainV[i - 1];
+// 	// this->mainV[0] = this->pendV[0];
+// 	// if (DEBUG)
+// 	// 	print(this->mainV);
+
+// 	// ? Insert the remaining of pendV
+// 	std::vector<int> jacob = jacobsthalSeq((int)this->pendV.size());
+// 	print(jacob);
+// 	return ;
+// 	for (size_t i = 0; i < jacob.size(); i++)
+// 	{
+// 		if (i < this->pendV.size())
+// 		{
+// 			this->vector.insert(std::lower_bound(this->vector.begin(), this->vector.end(), this->pendV[i]), this->pendV[i]);
+// 		}
+// 	}
+// 	if (this->extra != -1)
+// 	{
+// 		this->vector.insert(std::lower_bound(this->vector.begin(), this->vector.end(), this->extra), this->extra);
+// 	}
+// 	print(this->vector);
+
+// }
+
+// ? Jacobsthal sequence untill n
+static std::vector<int>	generateTill(int n)
+{
+	std::vector<int>jacob(0, 0);
+	// ? Base cases
+	jacob.push_back(0);
+	jacob.push_back(1);
+	// jacob.push_back(1);
+
+	// ? Recursive case
+	for (int i = 2; i < n; i++)
+	{
+		jacob.push_back(jacob[i - 1] + (2 * jacob[i - 2]));
+		// jacob[i] = jacob[i - 1] + (2 * jacob[i - 2]);
+	}
+	return jacob;
+}
+
+static std::vector<int>	jacobsthalSeq(int n)
+{
+	std::vector<int> seq(0,0);
+	std::vector<int> jacob = generateTill(n);
+	
+	for (size_t i = 1; i < jacob.size() - 1; i++)
+	{
+		int start = jacob[i];
+		int end = n;
+		if (i + 1 < jacob.size())
+			end = jacob[i + 1];
+
+		for (size_t j = std::min(end, n) - 1; j < (size_t)start; j++)
+			seq.push_back(j);
+	}
+
+	return seq;
+}
+
+std::vector<int> fordJohnsonV(std::vector<int>v)
+{
+	if (v.size() <= 1)
+		return v;
+
+	// ? Make pairs and sort by second component
+	if (DEBUG)
+		std::cout << "\nInserting: ";
+
+	std::vector<std::pair<int, int> > pairs;
+	bool hasOddValue = v.size() % 2 != 0;
+	int oddValue = v[v.size() - 1];
+
+	for (size_t i = 0; i < v.size() - 1; i += 2)
+	{
+		if (i + 1 < v.size())
+		{
+			std::pair<int,int> p;
+			if (v[i] < v[i + 1])
+				p = std::make_pair(v[i + 1], v[i]);
+			else
+				p = std::make_pair(v[i], v[i + 1]);
+			if (DEBUG)
+				std::cout << "{" << p.first << "," << p.second << "} ";
+			pairs.push_back(p);
+		}
+		else
+			oddValue = v[i];
+	}
+	
+	std::vector<int> mainChain(0,0);
+	std::vector<int> pendingChain(0,0);
+	
+	// ? Split values
+	for (size_t i = 0; i < pairs.size(); i++)
+	{
+		mainChain.push_back(pairs[i].first);
+		pendingChain.push_back(pairs[i].second);
+	}
+
+	if (DEBUG)
+	{
+		std::cout << "\nPrinting: ";
+		for (size_t i = 0; i < mainChain.size(); i++)
+		{
+			std::cout << "{" << mainChain[i] << "," << pendingChain[i] << "} ";
+		}
+	}
+
+	if (hasOddValue)
+	{
+		pendingChain.push_back(oddValue);
+		if (DEBUG)
+			std::cout << "{" << oddValue << "} ";
+	}
+	// std::cout << "\n";
+
+	// ? Sort mainV recursively
+	std::vector<int> mainSorted = fordJohnsonV(mainChain);
+
+	std::vector<int> result = std::vector<int>(mainSorted); // todo: review
+
+	// ? Insert pendV[0] at the beginning (mainV.push_front(pendV[0]))
+	result.insert(std::lower_bound(result.begin(), result.end(), pendingChain[0]), pendingChain[0]);
+
+	// ? Insert the remaining of pendV
+	std::vector<int> jacob = jacobsthalSeq((int)pendingChain.size());
+	// print(jacob);
+	for (size_t i = 0; i < jacob.size(); i++)
+	{
+		if (i < pendingChain.size())
+		{
+			result.insert(std::lower_bound(result.begin(), result.end(), pendingChain[i]), pendingChain[i]);
+		}
+	}
+
+	// ? Inserting the oddValue variable
+	if (hasOddValue)
+	{
+		result.insert(std::lower_bound(result.begin(), result.end(), oddValue), oddValue);
+	}
+	// print(result);
+
+	return result;
+}

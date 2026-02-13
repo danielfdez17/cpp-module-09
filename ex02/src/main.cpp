@@ -40,7 +40,7 @@ int main(int ac, char **av)
 		}
 		merge.addNumber(n);
 	}
-	std::cout << GREEN "\nAfter:  ";
+	std::cout << GREEN "\nAfter:  " RESET;
 	merge.fordJohnson();
 	// merge.displaySorted();
 	// merge.sort();

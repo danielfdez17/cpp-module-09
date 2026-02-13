@@ -5,7 +5,7 @@
 #include <iomanip>
 #include <list>
 
-PMergeMe::PMergeMe() : start(clock()), size(0), processingTime(0.0), extra(-1), mainV(0, 0), pendV(0, 0) {}
+PMergeMe::PMergeMe() : start(clock()), size(0), processingTime(0.0) {}
 
 PMergeMe::PMergeMe(PMergeMe const &copy) { (void)copy; }
 
@@ -25,7 +25,7 @@ void	PMergeMe::addNumber(int n)
 	this->vector.push_back(n);
 	this->list.push_back(n);
 	this->size++;
-	this->end = clock();
+	// this->end = clock();
 }
 
 void	PMergeMe::display() const
@@ -36,39 +36,42 @@ void	PMergeMe::display() const
 	print(this->list);
 }
 
-void	PMergeMe::displaySorted() const
+void	PMergeMe::displaySorted()
 {
+	this->stopProcessingTimer();
 	print(this->set);
-	// std::cout << "";
-	// std::set<int>::iterator it = this->set.begin();
-	// while (it != this->set.end())
-	// {
-	// 	std::cout << *it << " ";
-	// 	++it;
-	// }
-	// std::cout << "\n";
 }
 
 void	PMergeMe::sortVector()
 {
-	std::cout << std::fixed << std::setprecision(DISPLAYED_PRECISION);
-	std::cout << BLUE "Time to process a range of " << this->size << " elements with std::vector<int> : " << sortingTime(this->vector) + this->processingTime << " us\n";
+	std::cout	<< std::fixed << std::setprecision(DISPLAYED_PRECISION);
+	std::cout	<< BLUE "Time to process a range of "
+				<< this->size
+				<< " elements with std::vector<int> : not fully counted"
+				<< this->processingTime
+				<< " us\n";
 	
 }
 
 void	PMergeMe::sortList()
 {
-	std::cout << std::fixed << std::setprecision(DISPLAYED_PRECISION);
-	std::cout << CYAN "Time to process a range of " << this->size << " elements with      MyList<int> : " << sortingTime(this->list) + this->processingTime << " us\n" RESET;
+	std::cout	<< std::fixed << std::setprecision(DISPLAYED_PRECISION);
+	std::cout	<< CYAN "Time to process a range of "
+				<< this->size
+				<< " elements with      MyList<int> : not fully counted"
+				<< this->processingTime
+				<< " us\n" RESET;
 }
 
 void	PMergeMe::sort()
 {
 	this->sortVector();
 	this->sortList();
-	if (DEBUG)
+	if (DEBUGGING)
 	{
+		std::cout << DEBUG;
 		this->display();
+		std::cout << RESET;
 	}
 }
 
@@ -78,132 +81,269 @@ void	PMergeMe::stopProcessingTimer()
 	this->processingTime = double(this->end - this->start) / CLOCKS_PER_SEC;
 }
 
-// // ? Jacobsthal sequence untill n
-// static std::vector<int>	generateTill(int n)
-// {
-// 	std::vector<int>jacob(n, 0);
-// 	// ? Base cases
-// 	jacob[0] = 0;
-// 	jacob[1] = 1;
-// 	// jacob[2] = 1;
+// ? Jacobsthal sequence until n
+static std::vector<int>	generateTill(int n)
+{
+	std::vector<int> jacob;
 
-// 	// ? Recursive case
-// 	for (int i = 2; i < n; i++)
-// 	{
-// 		jacob[i] = jacob[i - 1] + (2 * jacob[i - 2]);
-// 	}
-// 	return jacob;
-// }
+	// ? Base cases
+	jacob.push_back(0);
+	jacob.push_back(1);
 
-// std::vector<int>	PMergeMe::jacobsthalSeq(int n) const
-// {
-// 	std::vector<int> seq(0,0);
-// 	std::vector<int> jacob = generateTill(n);
+	// ? Recursive case
+	for (int i = 2; i < n; i++)
+	{
+		jacob.push_back(jacob[i - 1] + (2 * jacob[i - 2]));
+	}
+	return jacob;
+}
+
+std::vector<int>	PMergeMe::jacobsthalSeq(int n) const
+{
+	std::vector<int> seq;
+	std::vector<int> jacob = generateTill(n + 2); // Generate enough Jacobsthal numbers
 	
-// 	for (size_t i = 1; i < jacob.size() - 1; i++)
-// 	{
-// 		int start = jacob[i];
-// 		int end = n;
-// 		if (i + 1 < jacob.size())
-// 			end = jacob[i + 1];
+	for (size_t i = 1; i < jacob.size() && jacob[i] <= n; i++)
+	{
+		// ? Skip if this Jacobsthal number is the same as previous (duplicate)
+		if (i > 1 && jacob[i] == jacob[i - 1])
+			continue;
+			
+		int start = (i == 1) ? 0 : jacob[i - 1];
+		int end = jacob[i];
+		size_t lower = static_cast<size_t>(start);
+		size_t upper = static_cast<size_t>(std::min(end, n - 1));
+		
+		for (size_t j = upper; j > lower; j--)
+			seq.push_back(j);
+	}
 
-// 		for (size_t j = std::min(end, n) - 1; j < (size_t)start; j++)
-// 			seq.push_back(j);
-// 	}
+	return seq;
+}
 
-// 	return seq;
-// }
+std::vector<int> PMergeMe::fordJohnson(const std::vector<int>&vector)
+{
+	if (vector.size() <= 1)
+		return vector;
 
-// // ! this is the recursive function
+	// ? Make pairs and sort by second component
+	if (DEBUGGING)
+		std::cout << "\nInserting: ";
+
+	std::vector<std::pair<int, int> > pairs;
+	bool hasOddValue = vector.size() % 2 != 0;
+	int oddValue = vector[vector.size() - 1];
+
+	for (size_t i = 0; i < vector.size() - 1; i += 2)
+	{
+		std::pair<int,int> p;
+		if (vector[i] < vector[i + 1])
+			p = std::make_pair(vector[i + 1], vector[i]);
+		else
+			p = std::make_pair(vector[i], vector[i + 1]);
+		if (DEBUGGING)
+			std::cout << "{" << p.first << "," << p.second << "} ";
+		pairs.push_back(p);
+	}
+	
+	if (DEBUGGING)
+	{
+		std::cout << "\nBefore sorting pairs: ";
+		for (size_t i = 0; i < pairs.size(); i++)
+		{
+			std::cout << "{" << pairs[i].first << "," << pairs[i].second << "} ";
+		}
+		std::cout << "\n";
+	}
+	// ? Sort pairs by first element to maintain pairing
+	std::sort(pairs.begin(), pairs.end());
+
+	if (DEBUGGING)
+	{
+		std::cout << "After sorting pairs: ";
+		for (size_t i = 0; i < pairs.size(); i++)
+		{
+			std::cout << "{" << pairs[i].first << "," << pairs[i].second << "} ";
+		}
+		std::cout << "\n";
+	}
+
+	std::vector<int> mainChain;
+	std::vector<int> pendingChain;
+	
+	// ? Split sorted pairs
+	for (size_t i = 0; i < pairs.size(); i++)
+	{
+		mainChain.push_back(pairs[i].first);
+		pendingChain.push_back(pairs[i].second);
+	}
+
+	if (hasOddValue)
+	{
+		pendingChain.push_back(oddValue);
+		if (DEBUGGING)
+			std::cout << "OddValue: {" << oddValue << "}\n";
+	}
+
+	// ? Recursively sort mainChain
+	std::vector<int> mainSorted = fordJohnson(mainChain);
+
+	std::vector<int> result = mainSorted;
+
+	// ? Insert pendV[0] at the beginning (mainV.push_front(pendV[0]))
+	result.insert(std::lower_bound(result.begin(), result.end(), pendingChain[0]), pendingChain[0]);
+
+	// ? Insert the remaining of pendV
+	std::vector<int> jacob = this->jacobsthalSeq((int)pendingChain.size());
+	for (size_t i = 0; i < jacob.size(); i++)
+	{
+		if (static_cast<size_t>(jacob[i]) < pendingChain.size())
+		{
+			result.insert(std::lower_bound(result.begin(), result.end(), pendingChain[jacob[i]]), pendingChain[jacob[i]]);
+		}
+	}
+
+	return result;
+}
+
+MyList<int> PMergeMe::fordJohnson(const MyList<int>&list)
+{
+	if (list.size() <= 1)
+		return list;
+
+	// ? Make pairs and sort by second component
+	if (DEBUGGING)
+		std::cout << "\nInserting: ";
+
+	std::vector<std::pair<int, int> > pairs;
+	bool hasOddValue = list.size() % 2 != 0;
+	int oddValue = list[list.size() - 1];
+
+	for (size_t i = 0; i < list.size() - 1; i += 2)
+	{
+		std::pair<int,int> p;
+		if (list[i] < list[i + 1])
+			p = std::make_pair(list[i + 1], list[i]);
+		else
+			p = std::make_pair(list[i], list[i + 1]);
+		if (DEBUGGING)
+			std::cout << "{" << p.first << "," << p.second << "} ";
+		pairs.push_back(p);
+	}
+	
+	if (DEBUGGING)
+	{
+		std::cout << "\nBefore sorting pairs: ";
+		for (size_t i = 0; i < pairs.size(); i++)
+		{
+			std::cout << "{" << pairs[i].first << "," << pairs[i].second << "} ";
+		}
+		std::cout << "\n";
+	}
+	// ? Sort pairs by first element to maintain pairing
+	std::sort(pairs.begin(), pairs.end());
+
+	if (DEBUGGING)
+	{
+		std::cout << "After sorting pairs: ";
+		for (size_t i = 0; i < pairs.size(); i++)
+		{
+			std::cout << "{" << pairs[i].first << "," << pairs[i].second << "} ";
+		}
+		std::cout << "\n";
+	}
+
+	MyList<int> mainChain;
+	MyList<int> pendingChain;
+	
+	// ? Split sorted pairs
+	for (size_t i = 0; i < pairs.size(); i++)
+	{
+		mainChain.push_back(pairs[i].first);
+		pendingChain.push_back(pairs[i].second);
+	}
+
+	if (DEBUGGING)
+	{
+		std::cout << "\nAfter sorting pairs: ";
+		for (size_t i = 0; i < mainChain.size(); i++)
+		{
+			std::cout << "{" << mainChain[i] << "," << pendingChain[i] << "} ";
+		}
+		std::cout << "\n";
+	}
+
+	if (hasOddValue)
+	{
+		pendingChain.push_back(oddValue);
+		if (DEBUGGING)
+			std::cout << "OddValue: {" << oddValue << "}\n";
+	}
+
+	// ? Recursively sort mainChain
+	MyList<int> mainSorted = fordJohnson(mainChain);
+
+	MyList<int> result = mainSorted;
+
+	// ? Insert pendV[0] at the beginning (mainV.push_front(pendV[0]))
+	result.insert(std::lower_bound(result.begin(), result.end(), pendingChain[0]), pendingChain[0]);
+
+	// ? Insert the remaining of pendV
+	std::vector<int> jacob = this->jacobsthalSeq((int)pendingChain.size());
+	for (size_t i = 0; i < jacob.size(); i++)
+	{
+		if (static_cast<size_t>(jacob[i]) < pendingChain.size())
+		{
+			result.insert(std::lower_bound(result.begin(), result.end(), pendingChain[jacob[i]]), pendingChain[jacob[i]]);
+		}
+	}
+
+	return result;
+}
+
 void	PMergeMe::fordJohnson()
 {
-	std::cout << "\nBefore: ";
-	print(this->vector);
-	std::vector<int> result = fordJohnsonV(this->vector);
-	std::cout << "After:  ";
-	print(result);
-// 	if (this->size <= 1)
-// 		return ;
+	if (DEBUGGING)
+	{
+		std::cout << "\n" DEBUG "Before vector: ";
+		print(this->vector);
+		std::cout << MAGENTA;
+	}
+	clock_t	start = clock();
+	std::vector<int> result = fordJohnson(this->vector);
+	clock_t	end = clock();
+	double elapsed = double(end - start) / CLOCKS_PER_SEC;
+	std::cout	<< std::fixed << std::setprecision(DISPLAYED_PRECISION);
+	std::cout	<< BLUE "Time to process a range of "
+				<< this->size
+				<< " elements with std::vector<int> : "
+				<< elapsed + this->processingTime
+				<< " us\n";
 	
-		
-// 	// ? Make pairs and sort by second component
-// 	if (DEBUG)
-// 		std::cout << "\nInserting: ";
+	if (DEBUGGING)
+	{
+		std::cout << DEBUG "After vector:  ";
+		print(result);
+		std::cout << MAGENTA "\nBefore MyList: ";
+		print(this->list);
+		std::cout << MAGENTA;
 
-// 	for (long i = 0; i < this->size - 1; i += 2)
-// 	{
-// 		if (i + 1 < this->size)
-// 		{
-// 			std::pair<int,int> p;
-// 			if (this->vector[i] < this->vector[i + 1])
-// 				p = std::make_pair(this->vector[i + 1], this->vector[i]);
-// 			else
-// 				p = std::make_pair(this->vector[i], this->vector[i + 1]);
-// 			if (DEBUG)
-// 				std::cout << "{" << p.first << "," << p.second << "} ";
-// 			this->pairs.push_back(p);
-// 		}
-// 		else
-// 			this->extra = this->vector[i];
-// 	}
-
-// 	// ? Split values
-// 	for (size_t i = 0; i < this->pairs.size(); i++)
-// 	{
-// 		this->mainV.push_back(this->pairs[i].first);
-// 		this->pendV.push_back(this->pairs[i].second);
-// 	}
-
-// 	if (DEBUG)
-// 	{
-// 		std::cout << "\nPrinting: ";
-// 		for (size_t i = 0; i < this->mainV.size(); i++)
-// 		{
-// 			std::cout << "{" << this->mainV[i] << "," << this->pendV[i] << "} ";
-// 		}
-// 	}
-
-// 	if (this->extra != -1)
-// 	{
-// 		this->pendV.push_back(this->extra);
-// 		if (DEBUG)
-// 			std::cout << "{" << this->extra << "} ";
-// 	}
-// 	std::cout << "\n";
-
-// 	// ? Sort mainV recursively
-// 	fordJohnson();
-// 	// if (DEBUG)
-// 	// 	print(this->mainV);
-// 	// recursiveMergeSort(this->mainV, 0, this->mainV.size() - 1);
-// 	// if (DEBUG)
-// 	// 	print(this->mainV);
-	
-// 	// ? Insert pendV[0] at the beginning (mainV.push_front(pendV[0]))
-// 	this->vector.insert(std::lower_bound(this->vector.begin(), this->vector.end(), pendV[0]), pendV[0]);
-// 	// this->mainV.push_back(pendV[0]);
-// 	// for (size_t i = this->mainV.size() - 1; i > 0; i--)
-// 	// 	this->mainV[i] = this->mainV[i - 1];
-// 	// this->mainV[0] = this->pendV[0];
-// 	// if (DEBUG)
-// 	// 	print(this->mainV);
-
-// 	// ? Insert the remaining of pendV
-// 	std::vector<int> jacob = jacobsthalSeq((int)this->pendV.size());
-// 	print(jacob);
-// 	return ;
-// 	for (size_t i = 0; i < jacob.size(); i++)
-// 	{
-// 		if (i < this->pendV.size())
-// 		{
-// 			this->vector.insert(std::lower_bound(this->vector.begin(), this->vector.end(), this->pendV[i]), this->pendV[i]);
-// 		}
-// 	}
-// 	if (this->extra != -1)
-// 	{
-// 		this->vector.insert(std::lower_bound(this->vector.begin(), this->vector.end(), this->extra), this->extra);
-// 	}
-// 	print(this->vector);
+	}
+	start = clock();
+	MyList<int> resultList = fordJohnson(this->list);
+	end = clock();
+	elapsed = double(end - start) / CLOCKS_PER_SEC;
+	std::cout	<< std::fixed << std::setprecision(DISPLAYED_PRECISION);
+	std::cout	<< CYAN "Time to process a range of "
+				<< this->size
+				<< " elements with      MyList<int> : "
+				<< elapsed + this->processingTime
+				<< " us\n" RESET;
+	if (DEBUGGING)
+	{
+		std::cout << DEBUG "After MyList:  ";
+		print(resultList);
+	}
 
 }
 

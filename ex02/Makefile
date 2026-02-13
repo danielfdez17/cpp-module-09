@@ -10,7 +10,7 @@ NAME = PmergeMe
 
 # * Compilation
 MYCPP = c++
-MYCPPFLAGS = -Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address -D DEBUG=false
+MYCPPFLAGS = -Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address -D DEBUGGING=false
 
 # * Removal
 RM = rm -rf
@@ -59,7 +59,7 @@ run:
 	clear
 	@$(MAKE) re --no-print-directory
 # 	./$(NAME) 
-	./$(NAME) 2 3 4 5 9999999999999999999
+# 	./$(NAME) 2 3 4 5 9999999999999999999
 # 	./$(NAME) 3 5 9 7 -4
 # 	./$(NAME) 3 5 9 7 4 1 50 10
 # 	./$(NAME) 3
@@ -69,8 +69,8 @@ run:
 # 	./$(NAME) 9 8 7 6 5 4 3 2 1
 # 	./$(NAME) 30 49 60 1 31 29 42 46 13 8 5
 # 	./$(NAME) 11 2 19 0 16 8 6 15 10 3 21 1 18 9 14 19 12 5 4 20 13 7
+	./$(NAME) `shuf -i 1-10 -n 10 | tr "\n" " "`
 # 	./$(NAME) `shuf -i 1-10 -n 10 | tr "\n" " "`
-# 	./$(NAME) `shuf -i 1-100000 -n 10 | tr "\n" " "`
 # 	./$(NAME) `shuf -i 1-100000 -n 10 | tr "\n" " "`
 # 	./$(NAME) `shuf -i 1-100000 -n 10 | tr "\n" " "`
 # 	./$(NAME) `shuf -i 1-100000 -n 10 | tr "\n" " "`

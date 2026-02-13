@@ -24,17 +24,13 @@ private:
 	std::vector<int>					vector;
 	MyList<int>							list;
 	MySet<int>							set;
-	std::vector<std::pair<int, int> >			pairs;
-	// MySet<std::pair<int, int> >			pairs;
-	int					extra;
-	std::vector<int> mainV;
-	std::vector<int> pendV;
-	// std::set<std::pair<int, int>>		set;
 	
 	void				sortVector();
 	void				sortList();
 	void				stopProcessingTimer();
 	void				display() const;
+	std::vector<int>	fordJohnson(const std::vector<int>&v);
+	MyList<int>			fordJohnson(const MyList<int>&v);
 
 public:
 	PMergeMe();
@@ -42,9 +38,8 @@ public:
 	PMergeMe & operator=(PMergeMe const& copy);
 	~PMergeMe();
 
-	// =>
 	void				addNumber(int n);
-	void				displaySorted() const;
+	void				displaySorted();
 	void				sort();
 	void				fordJohnson();
 	std::vector<int>	jacobsthalSeq(int n) const;

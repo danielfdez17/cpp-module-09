@@ -15,12 +15,13 @@
 #define INFO YELLOW << "[INFO] "
 #define ERROR RED << "[ERROR] "
 #define OK GREEN << "[OK] "
+#define DEBUG MAGENTA << "[DEBUG] "
 
-#ifndef DEBUG
-#define DEBUG false
-#endif // DEBUG
+#ifndef DEBUGGING
+#define DEBUGGING false
+#endif // DEBUGGING
 
 const int MAX_SIZE = 20;
-const int DISPLAYED_PRECISION = 10;
+const int DISPLAYED_PRECISION = 7;
 
 #endif // __COLORS__

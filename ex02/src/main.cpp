@@ -4,10 +4,6 @@
 #include <stdlib.h>
 #include <limits.h>
 
-#ifndef DEBUG
-#define DEBUG false
-#endif // DEBUG
-
 int main(int ac, char **av)
 {
 	if (ac == 1)
@@ -33,6 +29,7 @@ int main(int ac, char **av)
 		if (n < INT_MIN || n > INT_MAX)
 		{
 			std::cerr << ERROR << n << " is not an integer!\n" RESET;
+			return 0;
 		}
 		if (DEBUG)
 		{
@@ -40,17 +37,11 @@ int main(int ac, char **av)
 		}
 		merge.addNumber(n);
 	}
+	merge.sort();
 	if (DEBUG)
 	{
 		std::cout << GREEN "\nAfter:  ";
 		merge.displaySorted();
-	}
-	merge.sortVector();
-	merge.sortList();
-	if (DEBUG)
-	{
-		merge.display1();
-		merge.display2();
 	}
 
 	return 0;

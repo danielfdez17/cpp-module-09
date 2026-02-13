@@ -16,14 +16,10 @@
 #define ERROR RED << "[ERROR] "
 #define OK GREEN << "[OK] "
 
-static inline bool isOp(char c)
-{
-	return c == '+' || c == '*' || c == '-' || c == '/';
-}
+#ifndef DEBUG
+#define DEBUG false
+#endif // DEBUG
 
-static inline bool isValidChar(char c)
-{
-	return c == ' ' || isOp(c) || isdigit(c);
-}
+const int MAX_SIZE = 6;
 
 #endif // __COLORS__

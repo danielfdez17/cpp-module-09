@@ -25,24 +25,18 @@ private:
 	MyList<int>							list;
 	MySet<int>							set;
 	
-	void				sortVector();
-	void				sortList();
 	void				stopProcessingTimer();
-	void				display() const;
-	std::vector<int>	fordJohnson(const std::vector<int>&v);
-	MyList<int>			fordJohnson(const MyList<int>&v);
+
+	PMergeMe(PMergeMe const& copy);
+	PMergeMe & operator=(PMergeMe const& copy);
 
 public:
 	PMergeMe();
-	PMergeMe(PMergeMe const& copy);
-	PMergeMe & operator=(PMergeMe const& copy);
 	~PMergeMe();
 
 	void				addNumber(int n);
 	void				displaySorted();
-	void				sort();
 	void				fordJohnson();
-	std::vector<int>	jacobsthalSeq(int n) const;
 };
 
 #endif // __PMERGEME_HPP__

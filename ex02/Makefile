@@ -69,15 +69,9 @@ run:
 # 	./$(NAME) 9 8 7 6 5 4 3 2 1
 # 	./$(NAME) 30 49 60 1 31 29 42 46 13 8 5
 # 	./$(NAME) 11 2 19 0 16 8 6 15 10 3 21 1 18 9 14 19 12 5 4 20 13 7
-	./$(NAME) `shuf -i 1-10 -n 10 | tr "\n" " "`
 # 	./$(NAME) `shuf -i 1-10 -n 10 | tr "\n" " "`
-# 	./$(NAME) `shuf -i 1-100000 -n 10 | tr "\n" " "`
-# 	./$(NAME) `shuf -i 1-100000 -n 10 | tr "\n" " "`
-# 	./$(NAME) `shuf -i 1-100000 -n 10 | tr "\n" " "`
-# 	./$(NAME) `shuf -i 1-100000 -n 10 | tr "\n" " "`
-# 	./$(NAME) `shuf -i 1-100000 -n 10 | tr "\n" " "`
-# 	./$(NAME) `shuf -i 1-100000 -n 3000 | tr "\n" " "`
-# 	./$(NAME) `shuf -i 1-100000 -n 10000 | tr "\n" " "`
+# 	./$(NAME) `shuf -i 1-3000 -n 3000 | tr "\n" " "`
+	./$(NAME) `shuf -i 1-10000 -n 10000 | tr "\n" " "`
 
 debug:
 	clear

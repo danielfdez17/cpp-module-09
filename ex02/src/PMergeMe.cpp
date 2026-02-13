@@ -2,6 +2,7 @@
 #include "templates.hpp"
 #include <string>
 #include <iostream>
+#include <iomanip>
 #include <list>
 
 PMergeMe::PMergeMe() : start(clock()), size(0), processingTime(0.0) {}
@@ -50,12 +51,14 @@ void	PMergeMe::displaySorted() const
 
 void	PMergeMe::sortVector()
 {
+	std::cout << std::fixed << std::setprecision(DISPLAYED_PRECISION);
 	std::cout << BLUE "Time to process a range of " << this->size << " elements with std::vector<int> : " << sortingTime(this->vector) + this->processingTime << " us\n";
 	
 }
 
 void	PMergeMe::sortList()
 {
+	std::cout << std::fixed << std::setprecision(DISPLAYED_PRECISION);
 	std::cout << CYAN "Time to process a range of " << this->size << " elements with      MyList<int> : " << sortingTime(this->list) + this->processingTime << " us\n" RESET;
 }
 

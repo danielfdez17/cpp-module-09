@@ -21,5 +21,6 @@
 #endif // DEBUG
 
 const int MAX_SIZE = 20;
+const int DISPLAYED_PRECISION = 10;
 
 #endif // __COLORS__

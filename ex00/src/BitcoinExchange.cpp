@@ -41,6 +41,7 @@ bool	BitcoinExchange::isValidDate(std::string date)
 		return false;
 
 	Date d(date);
+	// std::cout << date << "\n";
 	return (d.getYear() >= 0 && d.getMonth() > 0 && d.getDay() > 0);
 }
 

@@ -19,7 +19,7 @@ BitcoinExchange::Date::Date(std::string date)
 	if (!validateMonth(this->month))
 		this->month = -1;
 	this->day = strtol(dayStr.c_str(), NULL, 10);
-	if (!validateDayOfMonth(this->month, this->day))
+	if (!validateDayOfMonth(this->year, this->month, this->day))
 		this->day = -1;
 }
 

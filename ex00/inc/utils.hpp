@@ -25,7 +25,7 @@ const size_t		DAY_SIZE = 2;
 const size_t		DATE_SIZE = YEAR_SIZE + 1 + MONTH_SIZE + 1 + DAY_SIZE;
 const char			HYPHEN = '-';
 
-const int MAX_YEAR = 2025;
+const int MAX_YEAR = 2027;
 const int MAX_MONTH = 12;
 const int MAX_VALUE = 1000;
 const int MIN_VALUE = 0;
@@ -40,7 +40,7 @@ static inline bool	validateMonth(int month)
 	return month > 0 && month <= MAX_MONTH;
 }
 
-static inline bool validateDayOfMonth(int month, int days)
+static inline bool validateDayOfMonth(int year, int month, int days)
 {
 	if (days <= 0)
 		return false;
@@ -49,7 +49,7 @@ static inline bool validateDayOfMonth(int month, int days)
 		case 1:
 			return days <= 31;
 		case 2:
-			if (month % 4 == 0)
+			if (year % 4 == 0)
 				return days <= 29;
 			return days <= 28;
 		case 3:
@@ -84,6 +84,8 @@ static inline int getDaysOfMonth(int year, int month)
 		case 1:
 			return 31;
 		case 2:
+			if (year == 2024)
+				std::cout << "bisiesto\n";
 			if (year % 4 == 0)
 				return 29;
 			return 28;

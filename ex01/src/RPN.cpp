@@ -1,5 +1,6 @@
 #include "RPN.hpp"
 #include <string>
+#include <iomanip>
 
 bool RPN::isValidRPN(std::string input) const
 {
@@ -50,7 +51,12 @@ void	RPN::displayResult() const
 			std::cout << GREEN;
 		else
 			std::cout << OK;
-		std::cout << this->stack.top() << "\n\n" << RESET;
+		float result = this->stack.top();
+		int intResult = static_cast<int>(result);
+		if (result == intResult)
+			std::cout << intResult << "\n\n" << RESET;
+		else
+			std::cout << std::fixed << result << "\n\n" << RESET;
 	}
 	catch(const std::exception& e)
 	{

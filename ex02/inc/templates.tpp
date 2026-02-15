@@ -97,14 +97,12 @@ Container	fordJohnsonTemplate(Container const& container)
 	}
 
 	// ? Recursively sort mainChain
-	Container mainSorted = fordJohnsonTemplate(mainChain);
+	Container result = fordJohnsonTemplate(mainChain);
 
-	Container result = mainSorted;
-
-	// ? Insert pendV[0] at the beginning (mainV.push_front(pendV[0]))
+	// ? Insert pendingChain[0] at the beginning (mainV.push_front(pendingChain[0]))
 	result.insert(std::lower_bound(result.begin(), result.end(), pendingChain[0]), pendingChain[0]);
 
-	// ? Insert the remaining of pendV
+	// ? Insert the remaining of pendingChain
 	std::vector<int> jacob = jacobsthalSeq((int)pendingChain.size());
 	for (size_t i = 0; i < jacob.size(); i++)
 	{

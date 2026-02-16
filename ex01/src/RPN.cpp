@@ -51,12 +51,8 @@ void	RPN::displayResult() const
 			std::cout << GREEN;
 		else
 			std::cout << OK;
-		float result = this->stack.top();
-		long longResult = static_cast<long>(result);
-		if (result == longResult)
-			std::cout << longResult << "\n\n" << RESET;
-		else
-			std::cout << std::fixed << this->stack.top() << "\n\n" << RESET;
+		printFloatValue(this->stack.top());
+		std::cout << "\n\n" << RESET;
 	}
 	catch(const std::exception& e)
 	{

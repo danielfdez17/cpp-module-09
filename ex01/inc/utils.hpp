@@ -3,6 +3,7 @@
 #define __COLORS__
 
 #include <iostream>
+#include <iomanip>
 
 #define RESET "\033[0m"
 #define RED "\033[31m"
@@ -32,6 +33,14 @@ static inline bool isOp(char c)
 static inline bool isValidChar(char c)
 {
 	return c == ' ' || isOp(c) || isdigit(c);
+}
+
+static inline void	printFloatValue(float value)
+{
+	long long longValue = static_cast<long long>(value);
+	if (value - longValue != 0.0f)
+		std::cout << std::fixed << std::setprecision(2);
+	std::cout << value << std::setprecision(0);
 }
 
 #endif // __COLORS__

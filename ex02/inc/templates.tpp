@@ -100,7 +100,7 @@ Container	fordJohnsonTemplate(Container const& container)
 	Container result = fordJohnsonTemplate(mainChain);
 
 	// ? Insert pendingChain[0] at the beginning (mainV.push_front(pendingChain[0]))
-	result.insert(std::lower_bound(result.begin(), result.end(), pendingChain[0]), pendingChain[0]);
+	// result.insert(std::lower_bound(result.begin(), result.end(), pendingChain[0]), pendingChain[0]);
 
 	// ? Insert the remaining of pendingChain
 	std::vector<int> jacob = jacobsthalSeq((int)pendingChain.size());
@@ -115,3 +115,16 @@ Container	fordJohnsonTemplate(Container const& container)
 	return result;
 }
 
+template <typename Container>
+bool	isSorted(Container const&c)
+{
+	for (size_t i = 0; i < c.size() - 1; i++)
+	{
+		if (c[i] > c[i + 1])
+		{
+			std::cout << DEBUG "Found unsorted elements: " << c[i] << " > " << c[i + 1] << "\n";
+			return false;
+		}
+	}
+	return true;
+}

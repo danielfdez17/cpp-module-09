@@ -48,7 +48,7 @@ void	PMergeMe::fordJohnson()
 		std::cout << MAGENTA;
 	}
 	clock_t	start = clock();
-	std::vector<int> result = fordJohnsonTemplate(this->vector);
+	std::vector<int> resultVector = fordJohnsonTemplate(this->vector);
 	clock_t	end = clock();
 	double elapsed = double(end - start) / CLOCKS_PER_SEC;
 	std::cout	<< std::fixed << std::setprecision(DISPLAYED_PRECISION);
@@ -58,10 +58,12 @@ void	PMergeMe::fordJohnson()
 				<< elapsed + this->processingTime
 				<< " us\n";
 	
+	// std::cout << DEBUG "Is " << (isSorted(resultVector) ? "" : "not ") << "sorted\n";
 	if (DEBUGGING)
 	{
+		std::cout << DEBUG "Is " << (isSorted(resultVector) ? "" : "not ") << "sorted\n";
 		std::cout << DEBUG "After vector:  ";
-		print(result);
+		print(resultVector);
 		std::cout << MAGENTA "\nBefore MyList: ";
 		print(this->list);
 		std::cout << MAGENTA;
@@ -77,8 +79,10 @@ void	PMergeMe::fordJohnson()
 				<< " elements with      MyList<int> : "
 				<< elapsed + this->processingTime
 				<< " us\n" RESET;
+	// std::cout << DEBUG "Is " << (isSorted(resultList) ? "" : "not ") << "sorted\n";
 	if (DEBUGGING)
 	{
+		std::cout << DEBUG "Is " << (isSorted(resultList) ? "" : "not ") << "sorted\n";
 		std::cout << DEBUG "After MyList:  ";
 		print(resultList);
 	}

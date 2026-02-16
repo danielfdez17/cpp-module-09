@@ -61,7 +61,7 @@ float	BitcoinExchange::findClosestValueForDate(std::string key)
 	--it;
 
 	std::cout << OK << "Found closest date {" << it->first << ",";
-	this->printFloatValue(it->second);
+	printFloatValue(it->second);
 	std::cout << "}: " RESET;
 	return it->second;
 }
@@ -200,9 +200,9 @@ void	BitcoinExchange::displayFactor(std::string input)
 	{
 		float factor = findClosestValueForDate(key);
 		std::cout << GREEN << key << " => ";
-		this->printFloatValue(value);
+		printFloatValue(value);
 		std::cout << " = ";
-		this->printFloatValue(value * factor);
+		printFloatValue(value * factor);
 		std::cout << "\n" RESET;
 	}
 	catch(const std::exception& e)
@@ -217,16 +217,3 @@ std::string	BitcoinExchange::stringConcat(std::string a, std::string b)
 	return a + b;
 }
 
-void BitcoinExchange::printFloatValue(float value)
-{
-	long longValue = static_cast<long>(value);
-	if (value - longValue == 0.0f)
-	{
-		std::cout << value;
-	}
-	else
-	{
-		std::cout << std::fixed << std::setprecision(2) << value;
-	}
-	std::cout << std::setprecision(0);
-}

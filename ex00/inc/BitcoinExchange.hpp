@@ -16,8 +16,6 @@ private:
 
 	bool					isValidDate(std::string);
 	float					findClosestValueForDate(std::string);
-	void					printFloatValue(float value);
-
 	
 	BitcoinExchange(BitcoinExchange const& copy);
 	BitcoinExchange & operator=(BitcoinExchange const& copy);

@@ -3,6 +3,7 @@
 #define __UTILS__
 
 #include <iostream> // ! DO NOT REMOVE
+#include <iomanip>
 
 #define RESET "\033[0m"
 #define RED "\033[31m"
@@ -129,6 +130,20 @@ static inline bool	validateValue(std::string value)
 			dotCounter++;
 	}
 	return dotCounter <= 1;
+}
+
+static inline void	printFloatValue(float value)
+{
+	long longValue = static_cast<long>(value);
+	if (value - longValue == 0.0f)
+	{
+		std::cout << value;
+	}
+	else
+	{
+		std::cout << std::fixed << std::setprecision(2) << value;
+	}
+	std::cout << std::setprecision(0);
 }
 
 #endif // __UTILS__

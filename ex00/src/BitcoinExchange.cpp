@@ -1,5 +1,6 @@
 #include "BitcoinExchange.hpp"
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <fstream>
 #include <stdlib.h>
@@ -45,31 +46,27 @@ bool	BitcoinExchange::isValidDate(std::string date)
 	return (d.getYear() >= 0 && d.getMonth() > 0 && d.getDay() > 0);
 }
 
-float	BitcoinExchange::findValueOfDateOrClosestDate(std::string key)
+float	BitcoinExchange::findClosestValueForDate(std::string key)
 {
 	if (this->dates.size() == 0)
 		throw std::runtime_error("There is no data!");
 
+	if (!isValidDate(key))
+		throw std::runtime_error(this->stringConcat(BAD_INPUT, key));
+
 	Date d(key);
-	std::map<Date, float>::iterator it = this->dates.lower_bound(d);
-	// std::map<Date, float>::iterator	it = this->dates.find(d);
-	// while (it == this->dates.end())
-	// {
-	// 	--d;
-	// 	it = this->dates.find(d);
-	// }
+	std::map<Date, float>::iterator it = this->dates.upper_bound(d);
+	if (it == this->dates.begin())
+		throw std::runtime_error("No earlier data found!");
 	--it;
-	if (it == this->dates.end())
-		throw std::runtime_error("No data found");
-	d = it->first;
-	std::cout << OK << "Found closest date {";
-	d.print();
-	std::cout << "," << it->second << "}: " RESET;
+
+	std::cout << OK << "Found closest date {" << it->first << ",";
+	this->printFloatValue(it->second);
+	std::cout << "}: " RESET;
 	return it->second;
-	return 0.0;
 }
 
-BitcoinExchange::BitcoinExchange() {}
+BitcoinExchange::BitcoinExchange() : firstDate(true), minimumDate(MAX_YEAR, MAX_MONTH, MAX_DAY) {}
 
 BitcoinExchange::BitcoinExchange(BitcoinExchange const& copy) { (void) copy;}
 
@@ -103,12 +100,12 @@ void	BitcoinExchange::readDatabase()
 		throw std::runtime_error("Could not opven data.csv file");
 
 	std::string		line;
-	// std::getline(database, line); // ? skip header
 	while (std::getline(database, line))
 	{
 		if (line == "date,exchange_rate")
 		{
-			// std::cout << INFO "found database file header\n" RESET;
+			if (DEBUGGING)
+				std::cout << DEBUG "found database file header\n" RESET;
 			continue;
 		}
 		size_t	sepPos = line.find(',');
@@ -117,7 +114,6 @@ void	BitcoinExchange::readDatabase()
 		std::string	date = line.substr(0, sepPos);
 		std::string	valueStr = line.substr(sepPos + 1);
 		float		value = strtof(valueStr.c_str(), NULL);
-		// std::cout << "Date: " << date << " Value: " << value << "\n";
 		try
 		{
 			this->addDateValue(date, value);
@@ -140,14 +136,14 @@ void	BitcoinExchange::readInputFile(std::string file)
 		throw std::runtime_error("Could not open " + file);
 
 	std::string line;
-	// std::getline(input, line); // ? read line
 	while (std::getline(input, line))
 	{
 		try
 		{
 			if (line == "date | value")
 			{
-				// std::cout << INFO "found input file header\n" RESET;
+				if (DEBUGGING)
+					std::cout << DEBUG "found input file header\n" RESET;
 				continue;
 			}
 			std::cout << INFO << "Processing '" << line << "': \n" RESET;
@@ -171,7 +167,16 @@ void	BitcoinExchange::addDateValue(std::string key, float value)
 		throw std::runtime_error(this->stringConcat(BAD_INPUT, key));
 	if (value < MIN_VALUE)
 		throw std::runtime_error(NOT_POSITIVE);
-
+	if (this->firstDate)
+	{
+		this->minimumDate = Date(key);
+		this->firstDate = false;
+	}
+	else
+	{
+		if (Date(key) < this->minimumDate)
+			this->minimumDate = Date(key);
+	}
 	this->dates.insert(std::make_pair(Date(key), value));
 }
 
@@ -180,6 +185,8 @@ void	BitcoinExchange::displayFactor(std::string input)
 	size_t		sepPos		=	input.find('|');
 	std::string	key			=	input.substr(0, sepPos - 1);
 	std::string	valueStr	=	input.substr(sepPos + 2);
+	if (!validateValue(valueStr))
+		throw std::runtime_error(this->stringConcat(BAD_INPUT, input));
 	float		value		=	strtof(valueStr.c_str(), NULL);
 
 	if (!isValidDate(key))
@@ -191,8 +198,12 @@ void	BitcoinExchange::displayFactor(std::string input)
 
 	try
 	{
-		float factor = findValueOfDateOrClosestDate(key);
-		std::cout << GREEN << key << " => " << value << " = " << value * factor << "\n" RESET;
+		float factor = findClosestValueForDate(key);
+		std::cout << GREEN << key << " => ";
+		this->printFloatValue(value);
+		std::cout << " = ";
+		this->printFloatValue(value * factor);
+		std::cout << "\n" RESET;
 	}
 	catch(const std::exception& e)
 	{
@@ -204,4 +215,18 @@ void	BitcoinExchange::displayFactor(std::string input)
 std::string	BitcoinExchange::stringConcat(std::string a, std::string b)
 {
 	return a + b;
+}
+
+void BitcoinExchange::printFloatValue(float value)
+{
+	long longValue = static_cast<long>(value);
+	if (value - longValue == 0.0f)
+	{
+		std::cout << value;
+	}
+	else
+	{
+		std::cout << std::fixed << std::setprecision(2) << value;
+	}
+	std::cout << std::setprecision(0);
 }

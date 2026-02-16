@@ -10,7 +10,7 @@ NAME = btc
 
 # * Compilation
 MYCPP = c++
-MYCPPFLAGS = -Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address
+MYCPPFLAGS = -Wall -Wextra -Werror -std=c++98 -g3 -fsanitize=address -D DEBUGGING=false
 
 # * Removal
 RM = rm -rf

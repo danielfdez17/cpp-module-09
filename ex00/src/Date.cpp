@@ -1,10 +1,11 @@
-#include "BitcoinExchange.hpp"
+#include "Date.hpp"
 #include "utils.hpp"
 #include <stdlib.h>
 
-BitcoinExchange::Date::Date() : year(0), month(1), day(1) {}
+// ! year-month-date
+Date::Date::Date() : year(0), month(1), day(1) {}
 
-BitcoinExchange::Date::Date(std::string date)
+Date::Date::Date(std::string date)
 {
 	std::string yearStr, monthStr, dayStr;
 
@@ -23,9 +24,9 @@ BitcoinExchange::Date::Date(std::string date)
 		this->day = -1;
 }
 
-BitcoinExchange::Date::Date(int y, int m, int d) : year(y), month(m), day(d) {}
+Date::Date::Date(int y, int m, int d) : year(y), month(m), day(d) {}
 
-BitcoinExchange::Date::Date(Date const& copy)
+Date::Date::Date(Date const& copy)
 {
 	if (this != &copy)
 	{
@@ -34,7 +35,7 @@ BitcoinExchange::Date::Date(Date const& copy)
 		this->day = copy.day;
 	}
 }
-BitcoinExchange::Date & BitcoinExchange::Date::operator=(Date const& copy)
+Date & Date::operator=(Date const& copy)
 {
 	if (this != &copy)
 	{
@@ -45,7 +46,7 @@ BitcoinExchange::Date & BitcoinExchange::Date::operator=(Date const& copy)
 	return *this;
 }
 
-bool	BitcoinExchange::Date::operator<(Date const& other) const
+bool	Date::operator<(Date const& other) const
 {
 	if (this->year != other.year)
 		return this->year < other.year;
@@ -54,7 +55,33 @@ bool	BitcoinExchange::Date::operator<(Date const& other) const
 	return this->day < other.day;
 }
 
-BitcoinExchange::Date	BitcoinExchange::Date::operator--()
+bool	Date::operator>(Date const& other) const
+{
+	if (this->year != other.year)
+		return this->year > other.year;
+	if (this->month != other.month)
+		return this->month > other.month;
+	return this->day > other.day;
+}
+bool	Date::operator<=(Date const& other) const
+{
+	return !(*this > other);
+}
+bool	Date::operator>=(Date const& other) const
+{
+	return !(*this < other);
+}
+bool	Date::operator==(Date const& other) const
+{
+	return this->year == other.year && this->month == other.month && this->day == other.day;
+}
+
+bool	Date::operator!=(Date const& other) const
+{
+	return this->year != other.year || this->month != other.month || this->day != other.day;
+}
+
+Date	&Date::operator--()
 {
 	if (this->day > 1)
 	{
@@ -71,23 +98,37 @@ BitcoinExchange::Date	BitcoinExchange::Date::operator--()
 		{
 			this->year--;
 			this->month = 12;
-			this->day = 31;
+			this->day = getDaysOfMonth(this->year, this->month);
+			if (this->year < 0 || this->month < 1 || this->day < 1)
+			{
+				this->year = 0;
+				this->month = 1;
+				this->day = 1;
+			}
 		}
 	}
 	return *this;
 }
 
-BitcoinExchange::Date::~Date() {}
+Date::~Date() {}
 
-long	BitcoinExchange::Date::getYear() const { return this->year; }
+long	Date::getYear() const { return this->year; }
 
-long	BitcoinExchange::Date::getMonth() const { return this->month; }
+long	Date::getMonth() const { return this->month; }
 
-long	BitcoinExchange::Date::getDay() const { return this->day; }
+long	Date::getDay() const { return this->day; }
 
-void	BitcoinExchange::Date::print() const
+void	Date::print() const
 {
 	std::cout << this->year << "-" 
 			  << (this->month < 10 ? "0" : "") << this->month << "-" 
 			  << (this->day < 10 ? "0" : "") << this->day;
+}
+
+std::ostream& operator<<(std::ostream& os, const Date& date)
+{
+	os << date.getYear() << "-" 
+	   << (date.getMonth() < 10 ? "0" : "") << date.getMonth() << "-" 
+	   << (date.getDay() < 10 ? "0" : "") << date.getDay();
+	return os;
 }

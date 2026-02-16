@@ -3,37 +3,20 @@
 #define __BITCOINEXCHANGE_HPP__
 
 #include "utils.hpp"
+#include "Date.hpp"
 #include <map>
 
 class BitcoinExchange
 {
 private:
-	class Date
-	{
-		private:
-			long	year;
-			long	month;
-			long	day;
-		public:
-			Date();
-			Date(std::string);
-			Date(int, int, int);
-			Date(Date const&);
-			Date & operator=(Date const&);
-			bool	operator<(Date const&) const;
-			Date	operator--();
-			~Date();
-			long	getYear() const;
-			long	getMonth() const;
-			long	getDay() const;
-			void	print() const;
-	};
-
 
 	std::map<Date, float>	dates;
+	bool					firstDate;
+	Date					minimumDate;
 
 	bool					isValidDate(std::string);
-	float					findValueOfDateOrClosestDate(std::string);
+	float					findClosestValueForDate(std::string);
+	void					printFloatValue(float value);
 
 	
 	BitcoinExchange(BitcoinExchange const& copy);

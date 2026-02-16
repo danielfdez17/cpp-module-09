@@ -13,11 +13,16 @@
 #define CYAN "\033[36m"
 #define WHITE "\033[37m"
 #define INFO YELLOW << "[INFO] "
+#define DEBUG MAGENTA << "[DEBUG] "
 #define ERROR RED << "[ERROR] "
 #define OK GREEN << "[OK] "
 #define BAD_INPUT "Bad input => "
 #define NOT_POSITIVE "Not a positive number"
 #define TOO_LARGE_NUMBER "Too large number"
+
+#ifndef DEBUGGING
+#define DEBUGGING true
+#endif // DEBUGGING
 
 const size_t		YEAR_SIZE = 4;
 const size_t		MONTH_SIZE = 2;
@@ -27,6 +32,7 @@ const char			HYPHEN = '-';
 
 const int MAX_YEAR = 2027;
 const int MAX_MONTH = 12;
+const int MAX_DAY = 31;
 const int MAX_VALUE = 1000;
 const int MIN_VALUE = 0;
 
@@ -84,8 +90,6 @@ static inline int getDaysOfMonth(int year, int month)
 		case 1:
 			return 31;
 		case 2:
-			if (year == 2024)
-				std::cout << "bisiesto\n";
 			if (year % 4 == 0)
 				return 29;
 			return 28;
@@ -112,6 +116,19 @@ static inline int getDaysOfMonth(int year, int month)
 		default:
 			return 0;
 	}
+}
+
+static inline bool	validateValue(std::string value)
+{
+	int	dotCounter = 0;
+	for (size_t i = 0; i < value.size(); i++)
+	{
+		if (!isdigit(value[i]) && value[i] != '.')
+			return false;
+		if (value[i] == '.')
+			dotCounter++;
+	}
+	return dotCounter <= 1;
 }
 
 #endif // __UTILS__

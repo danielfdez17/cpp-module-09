@@ -23,17 +23,17 @@ float RPN::processOp(float a, char op, float b)
 	switch (op)
 	{
 	case '+':
-		return a + b;
+		return static_cast<float>(a + b);
 	case '-':
-		return a - b;
+		return static_cast<float>(a - b);
 	case '*':
-		return a * b;
+		return static_cast<float>(a * b);
 	case '/':
 		if (b == 0.0f)
 			throw std::runtime_error(DIVISION_BY_0);
-		return a / b;
+		return static_cast<float>(a / b);
 	}
-	return 0.0;
+	return 0.0f;
 }
 
 void	RPN::displayResult() const
@@ -63,7 +63,7 @@ void	RPN::displayResult() const
 bool RPN::processRPN(std::string input)
 {
 	size_t size = input.size();
-	int a, b;
+	float a, b;
 	try
 	{
 		for (size_t i = 0; i < size; i++)

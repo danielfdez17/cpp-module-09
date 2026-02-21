@@ -1,0 +1,3 @@
+[submodule "ex00/inc/logger"]
+	path = ex00/inc/logger
+	url = https://github.com/danielfdez17/cpp-logger.git

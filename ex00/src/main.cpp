@@ -24,6 +24,6 @@ int main(int ac, char **av)
 		std::cerr << ERROR << e.what() << "\n" RESET;
 	}
 	Logger logger;
-	logger.log(E_INFO, "Starting Bitcoin Exchange application...");
+	logger.info("Bitcoin Exchange application finished successfully.");
 	return 0;
 }

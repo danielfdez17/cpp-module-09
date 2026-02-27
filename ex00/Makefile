@@ -66,8 +66,9 @@ fclean: clean
 	@echo "$(OK) $(RED)Removed $(NAME)$(RESET)"
 	@$(RM) $(NAME)
 
-re: fclean all
+re: fclean
 	@$(MAKE) -C $(LOGGER_DIR) re $(NO_PRINT)
+	@$(MAKE) --no-print-directory
 	@echo "$(OK) $(YELLOW)Rebuilt $(NAME)$(RESET)"
 
 run:

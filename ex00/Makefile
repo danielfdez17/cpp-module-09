@@ -50,7 +50,7 @@ $(LOGGER_LIB):
 update:
 	@git submodule update --init --recursive --remote --merge 2>/dev/null || true
 
-all: obj logs update $(NAME)
+all: update obj logs $(NAME)
 
 obj:
 	@mkdir -p $(OBJ_DIR)
@@ -62,23 +62,25 @@ clean:
 	@$(RM) $(OBJS)
 	@echo "$(OK) $(RED)Removed object files$(RESET)"
 
-fclean: clean
+fclean: #clean
+	@$(MAKE) clean $(NO_PRINT)
 	@echo "$(OK) $(RED)Removed $(NAME)$(RESET)"
 	@$(RM) $(NAME)
 
-re: fclean
+re: #fclean all
 	@$(MAKE) -C $(LOGGER_DIR) re $(NO_PRINT)
-	@$(MAKE) --no-print-directory
+	@$(MAKE) $(NO_PRINT) fclean
+	@$(MAKE) $(NO_PRINT) all
 	@echo "$(OK) $(YELLOW)Rebuilt $(NAME)$(RESET)"
 
 run:
-	clear
-	@$(MAKE) re --no-print-directory
+	@clear
+	@$(MAKE) re $(NO_PRINT)
 	./$(NAME) input.txt
 
 debug:
-	clear
-	@$(MAKE) re --no-print-directory
+	@clear
+	@$(MAKE) re $(NO_PRINT)
 	gdb ./$(NAME)
 
 .PHONY: all obj clean fclean re run debug
